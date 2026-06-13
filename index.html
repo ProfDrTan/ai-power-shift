@@ -623,6 +623,33 @@
     .nav-links { display: none; }
     h2 { font-size: 1.5rem; }
   }
+
+  /* SEARCH */
+  .search-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.85); z-index:999; padding:80px 1rem 2rem; }
+  .search-overlay.active { display:flex; flex-direction:column; align-items:center; }
+  .search-box { width:100%; max-width:680px; font-family:system-ui; font-size:1rem; padding:0.85rem 1.25rem; background:var(--surface2); border:2px solid var(--gold); border-radius:8px; color:var(--text); outline:none; }
+  .search-results { width:100%; max-width:680px; margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; max-height:60vh; overflow-y:auto; }
+  .search-result-item { padding:0.9rem 1.1rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; cursor:pointer; }
+  .search-result-item:hover { border-color:var(--gold-dim); }
+  .search-result-title { font-family:system-ui; font-size:0.85rem; font-weight:700; color:var(--gold); margin-bottom:0.3rem; }
+  .search-result-snippet { font-size:0.78rem; color:var(--text-dim); line-height:1.5; }
+  .search-result-snippet em { background:rgba(201,168,76,0.2); color:var(--gold); font-style:normal; padding:0 2px; border-radius:2px; }
+  .search-close { position:absolute; top:16px; right:20px; font-family:system-ui; font-size:1.5rem; color:var(--text-dim); cursor:pointer; background:none; border:none; }
+  .search-btn { background:none; border:1px solid var(--border); color:var(--text-dim); font-family:system-ui; font-size:0.75rem; padding:0.3rem 0.8rem; border-radius:4px; cursor:pointer; letter-spacing:0.05em; display:flex; align-items:center; gap:6px; }
+  .search-btn:hover { border-color:var(--gold-dim); color:var(--gold); }
+
+  /* WHATS NEW */
+  .whats-new { position:fixed; bottom:1.5rem; right:1.5rem; z-index:200; }
+  .whats-new-btn { background:var(--gold); color:#0a0e1a; font-family:system-ui; font-size:0.75rem; font-weight:700; padding:0.6rem 1rem; border-radius:20px; border:none; cursor:pointer; letter-spacing:0.06em; text-transform:uppercase; box-shadow:0 4px 20px rgba(201,168,76,0.4); }
+  .whats-new-panel { display:none; position:absolute; bottom:3rem; right:0; width:300px; background:var(--surface); border:1px solid var(--gold-dim); border-radius:10px; padding:1.25rem; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+  .whats-new-panel.open { display:block; }
+  .whats-new-title { font-family:system-ui; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem; }
+  .whats-new-item { padding:0.5rem 0; border-bottom:1px solid var(--border); }
+  .whats-new-item:last-child { border-bottom:none; padding-bottom:0; }
+  .whats-new-item a { font-family:system-ui; font-size:0.8rem; color:var(--text); text-decoration:none; display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+  .whats-new-item a:hover { color:var(--gold); }
+  .whats-new-item .badge { font-size:0.6rem; background:rgba(201,168,76,0.15); color:var(--gold); border:1px solid var(--gold-dim); border-radius:3px; padding:1px 5px; flex-shrink:0; margin-top:2px; letter-spacing:0.05em; text-transform:uppercase; }
+  .whats-new-item .badge.breaking { background:rgba(224,82,82,0.15); color:#e05252; border-color:#e05252; }
 </style>
 </head>
 <body>
@@ -630,6 +657,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-brand">The AI Power Shift</div>
+  <button class="search-btn" onclick="openSearch()">🔍 Search</button>
   <ul class="nav-links">
     <li><a href="#stack">Power Stack</a></li>
     <li><a href="#tollroads">Toll Roads</a></li>
@@ -1588,5 +1616,86 @@
   </div>
 </footer>
 
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <button class="search-close" onclick="closeSearch()">✕</button>
+  <input class="search-box" id="searchBox" placeholder="Search the AI Power Shift... (e.g. Nvidia, SpaceX, Malaysia, quantum)" oninput="runSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearch()">
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- WHAT'S NEW FLOATING BUTTON -->
+<div class="whats-new">
+  <div class="whats-new-panel" id="whatsNewPanel">
+    <div class="whats-new-title">⚡ What's New — June 13, 2026</div>
+    <div class="whats-new-item"><a href="#spacex-ipo"><span class="badge breaking">Breaking</span>SpaceX IPO Day 1 — $2T market cap, 19% first-day gain, retail investor trap confirmed</a></div>
+    <div class="whats-new-item"><a href="#week25"><span class="badge">New</span>Nvidia Blackwell Update — $81.6B Q1 FY2027 revenue, 85% YoY growth, Vera Rubin shipping</a></div>
+    <div class="whats-new-item"><a href="#hero"><span class="badge">Updated</span>Hero stats — $725B hyperscaler capex, 950 TWh energy demand, 40% job exposure</a></div>
+    <div class="whats-new-item"><a href="#tollroads"><span class="badge">Updated</span>Hidden Toll Roads — Nvidia 13x data centre growth since ChatGPT launch</a></div>
+    <div class="whats-new-item"><a href="#investor"><span class="badge">Updated</span>Retail Investor Lens — Anthropic $965B S-1, SpaceX $1.77T IPO case study</a></div>
+    <div class="whats-new-item"><a href="#sources"><span class="badge">Updated</span>Source Log — live links to IEA, NIST, CNBC, SEC filings added</a></div>
+  </div>
+  <button class="whats-new-btn" onclick="toggleWhatsNew()">⚡ What's New</button>
+</div>
+
+<script>
+// SEARCH
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('active');
+  setTimeout(() => document.getElementById('searchBox').focus(), 100);
+}
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('active');
+  document.getElementById('searchBox').value = '';
+  document.getElementById('searchResults').innerHTML = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='/' && !e.ctrlKey) { e.preventDefault(); openSearch(); } });
+
+function runSearch(q) {
+  const res = document.getElementById('searchResults');
+  if (q.length < 2) { res.innerHTML = ''; return; }
+  const sections = document.querySelectorAll('section, .stack-card, .toll-item, .chapter-card, .region-card, .quantum-pillar');
+  const results = [];
+  const ql = q.toLowerCase();
+  sections.forEach(s => {
+    const text = s.innerText;
+    const tl = text.toLowerCase();
+    const idx = tl.indexOf(ql);
+    if (idx === -1) return;
+    const heading = s.querySelector('h2,h3,.stack-title,.toll-name,.chapter-title,.region-name,.quantum-title,.eyebrow');
+    const title = heading ? heading.innerText.trim() : 'Section';
+    const start = Math.max(0, idx - 60);
+    const end = Math.min(text.length, idx + q.length + 100);
+    let snippet = text.substring(start, end).replace(/
++/g,' ').trim();
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\]/g,'\$&') + ')', 'gi');
+    snippet = snippet.replace(re, '<em>$1</em>');
+    const anchor = s.id ? '#' + s.id : '';
+    results.push({title, snippet, anchor, el: s});
+  });
+  if (results.length === 0) {
+    res.innerHTML = '<div style="font-family:system-ui;font-size:0.85rem;color:var(--text-muted);padding:1rem;">No results found for "' + q + '"</div>';
+    return;
+  }
+  res.innerHTML = results.slice(0,8).map(r =>
+    '<div class="search-result-item" onclick="goTo('' + r.anchor + '');closeSearch()"><div class="search-result-title">' + r.title + '</div><div class="search-result-snippet">' + r.snippet + '</div></div>'
+  ).join('');
+}
+
+function goTo(anchor) {
+  if (!anchor) return;
+  const el = document.querySelector(anchor);
+  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// WHATS NEW
+function toggleWhatsNew() {
+  document.getElementById('whatsNewPanel').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const wn = document.querySelector('.whats-new');
+  if (wn && !wn.contains(e.target)) document.getElementById('whatsNewPanel').classList.remove('open');
+});
+</script>
 </body>
 </html>
