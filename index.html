@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Power Shift — Who Owns the Intelligence</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e2f;
+    --teal: #2dd4bf;
+    --teal-dim: #1a7a6e;
+    --text: #e8e0d0;
+    --text-dim: #8a9ab5;
+    --text-muted: #4a5a72;
+    --red: #e05252;
+    --green: #4ade80;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,14,26,0.96);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 56px;
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-brand {
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  h1, h2, h3 {
+    font-family: system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-intro {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 680px;
+    margin-bottom: 3rem;
+    border-left: 3px solid var(--gold-dim);
+    padding-left: 1.25rem;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 56px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-tag {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1.5rem;
+  }
+
+  h1.hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: #fff;
+  }
+
+  h1.hero-title span {
+    color: var(--gold);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .hero-thesis {
+    font-size: 1.15rem;
+    color: var(--text);
+    line-height: 1.8;
+    padding: 1.5rem;
+    background: var(--surface);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 2rem;
+  }
+
+  .hero-questions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .hero-q {
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-q::before {
+    content: "→ ";
+    color: var(--teal);
+  }
+
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .power-node {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+
+  .power-node:hover {
+    border-color: var(--gold-dim);
+    background: var(--surface2);
+  }
+
+  .power-node-num {
+    font-family: system-ui, sans-serif;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .power-node-label {
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    flex: 1;
+  }
+
+  .power-node-arrow {
+    color: var(--gold);
+    font-size: 0.8rem;
+  }
+
+  /* POWER STACK */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .stack-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .stack-card:hover { border-color: var(--gold-dim); }
+
+  .stack-layer {
+    font-family: system-ui, sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.5rem;
+  }
+
+  .stack-title {
+    font-family: system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .stack-companies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .tag.highlight { border-color: var(--gold-dim); color: var(--gold); }
+
+  /* TOLL ROADS */
+  .toll-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .toll-item {
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold-dim);
+    border-radius: 0 0 6px 6px;
+  }
+
+  .toll-name {
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .toll-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: system-ui, sans-serif;
+    font-size: 0.82rem;
+  }
+
+  th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: var(--surface2);
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--border);
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+
+  tr:hover td { background: var(--surface); color: var(--text); }
+
+  td.key { color: var(--text); font-weight: 600; }
+  td.gold { color: var(--gold); }
+  td.teal { color: var(--teal); }
+  td.red { color: var(--red); }
+  td.green { color: var(--green); }
+
+  /* CHAPTERS */
+  .chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .chapter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .chapter-card:hover {
+    border-color: var(--teal-dim);
+    background: var(--surface2);
+  }
+
+  .chapter-num {
+    font-family: system-ui, sans-serif;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .chapter-title {
+    font-family: system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+
+  .chapter-hook {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .chapter-status {
+    margin-top: 0.75rem;
+    display: inline-block;
+    font-family: system-ui, sans-serif;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* SOURCES */
+  .source-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .source-cat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .source-cat-title {
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+  }
+
+  .source-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .source-list li {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    padding-left: 0.75rem;
+    position: relative;
+  }
+
+  .source-list li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+  }
+
+  /* GLOBAL MAP */
+  .region-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .region-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .region-name {
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .region-role {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .region-notes {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* QUANTUM */
+  .quantum-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .quantum-pillar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--teal-dim);
+    border-radius: 0 0 8px 8px;
+    padding: 1.5rem;
+  }
+
+  .quantum-title {
+    font-family: system-ui, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+  }
+
+  .quantum-desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  /* WATCHLIST */
+  .score-legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .score-badge {
+    font-family: system-ui, sans-serif;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .score-5 { border-color: var(--green); color: var(--green); }
+  .score-4 { border-color: var(--teal); color: var(--teal); }
+  .score-3 { border-color: var(--gold); color: var(--gold); }
+  .score-2 { border-color: #f59e0b; color: #f59e0b; }
+  .score-1 { border-color: var(--red); color: var(--red); }
+
+  /* NEXT QUESTIONS */
+  .questions-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .question-item {
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal-dim);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--text);
+    padding: 2rem 2.5rem;
+    border-left: 4px solid var(--gold);
+    background: var(--surface);
+    border-radius: 0 8px 8px 0;
+    margin: 2.5rem 0;
+    max-width: 780px;
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 0;
+    text-align: center;
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  footer span { color: var(--gold-dim); }
+
+  /* VERIFY BADGE */
+  .verify {
+    font-family: system-ui, sans-serif;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+    margin-left: 0.4rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual { display: none; }
+    .quantum-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    h2 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">The AI Power Shift</div>
+  <ul class="nav-links">
+    <li><a href="#stack">Power Stack</a></li>
+    <li><a href="#tollroads">Toll Roads</a></li>
+    <li><a href="#investor">Investor Lens</a></li>
+    <li><a href="#chapters">Chapters</a></li>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#global">Global Map</a></li>
+    <li><a href="#quantum">Quantum</a></li>
+    <li><a href="#watchlist">Watchlist</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+<div class="container">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">Strategic Research &amp; Book Intelligence Platform</div>
+      <h1 class="hero-title">The AI<span>Power Shift</span></h1>
+      <p class="hero-subtitle">Who Owns the Intelligence, Who Pays the Rent,<br>and Who Gets Left Behind</p>
+      <div class="hero-thesis">
+        AI is not just a technology story. It is a power-transfer story. The public sees chatbots and apps. The deeper story is the systematic transfer of economic power across the entire AI ecosystem — from apps to infrastructure, from software to compute, from consumer brands to hidden infrastructure owners.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gold);padding:1rem;border-radius:0 0 6px 6px;">
+          <div style="font-family:system-ui;font-size:1.5rem;font-weight:800;color:var(--gold);">$725B</div>
+          <div style="font-family:system-ui;font-size:0.72rem;color:var(--text-dim);line-height:1.4;">Big Four hyperscaler capex 2026 — up 77% YoY <em>(FT/Q1 2026 earnings)</em></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--teal);padding:1rem;border-radius:0 0 6px 6px;">
+          <div style="font-family:system-ui;font-size:1.5rem;font-weight:800;color:var(--teal);">950 TWh</div>
+          <div style="font-family:system-ui;font-size:0.72rem;color:var(--text-dim);line-height:1.4;">Data centre electricity demand by 2030 — double 2025 <em>(IEA, April 2026)</em></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid #e05252;padding:1rem;border-radius:0 0 6px 6px;">
+          <div style="font-family:system-ui;font-size:1.5rem;font-weight:800;color:#e05252;">40%</div>
+          <div style="font-family:system-ui;font-size:0.72rem;color:var(--text-dim);line-height:1.4;">Global jobs exposed to AI — 60% in advanced economies <em>(IMF, 2024)</em></div>
+        </div>
+      </div>
+      <div class="hero-questions">
+        <div class="hero-q">Who owns the layer?</div>
+        <div class="hero-q">Who pays the rent?</div>
+        <div class="hero-q">Where does money flow?</div>
+        <div class="hero-q">What is the bottleneck?</div>
+        <div class="hero-q">Who arrives late?</div>
+        <div class="hero-q">Who gets left behind?</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="power-node"><span class="power-node-num">L7</span><span class="power-node-label">Distribution &amp; Devices</span><span class="power-node-arrow">↓</span></div>
+      <div class="power-node"><span class="power-node-num">L6</span><span class="power-node-label">AI Models &amp; Intelligence</span><span class="power-node-arrow">↓</span></div>
+      <div class="power-node"><span class="power-node-num">L5</span><span class="power-node-label">Cloud Platforms</span><span class="power-node-arrow">↓</span></div>
+      <div class="power-node"><span class="power-node-num">L4</span><span class="power-node-label">Data Centres &amp; AI Factories</span><span class="power-node-arrow">↓</span></div>
+      <div class="power-node"><span class="power-node-num">L3</span><span class="power-node-label">Chips &amp; Compute</span><span class="power-node-arrow">↓</span></div>
+      <div class="power-node"><span class="power-node-num">L2</span><span class="power-node-label">Energy &amp; Grid Infrastructure</span><span class="power-node-arrow">↓</span></div>
+      <div class="power-node"><span class="power-node-num">L1</span><span class="power-node-label">Capital &amp; Geopolitics</span><span class="power-node-arrow">⊗</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- POWER STACK -->
+<section id="stack">
+<div class="container">
+  <div class="eyebrow">Section 01</div>
+  <h2>The AI Power Stack</h2>
+  <p class="section-intro">The AI economy is not flat. It is a layered stack where each level extracts rent from the level above. The question is not which AI wins — it is which layer is hardest to bypass.</p>
+  <div class="stack-grid">
+
+    <div class="stack-card">
+      <div class="stack-layer">Layer 6 — Models</div>
+      <div class="stack-title">Intelligence Providers</div>
+      <div class="stack-companies">
+        <span class="tag highlight">OpenAI</span><span class="tag highlight">Anthropic</span><span class="tag highlight">Google DeepMind</span>
+        <span class="tag">Meta</span><span class="tag">xAI</span><span class="tag">Mistral</span>
+        <span class="tag">DeepSeek</span><span class="tag">Alibaba</span><span class="tag">Tencent</span>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-layer">Layer 5 — Chips &amp; Compute</div>
+      <div class="stack-title">Silicon Infrastructure</div>
+      <div class="stack-companies">
+        <span class="tag highlight">Nvidia</span><span class="tag highlight">TSMC</span><span class="tag highlight">ASML</span>
+        <span class="tag">AMD</span><span class="tag">Broadcom</span><span class="tag">SK Hynix</span>
+        <span class="tag">Micron</span><span class="tag">Marvell</span><span class="tag">Arm</span>
+        <span class="tag">GPUs</span><span class="tag">TPUs</span><span class="tag">ASICs</span><span class="tag">HBM</span>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-layer">Layer 4 — Cloud Platforms</div>
+      <div class="stack-title">Compute-as-a-Service</div>
+      <div class="stack-companies">
+        <span class="tag highlight">Microsoft Azure</span><span class="tag highlight">Amazon AWS</span>
+        <span class="tag highlight">Google Cloud</span><span class="tag">Oracle Cloud</span>
+        <span class="tag">CoreWeave</span><span class="tag">Sovereign Cloud</span>
+        <span class="tag">GPU Cloud</span>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-layer">Layer 3 — Data Centres</div>
+      <div class="stack-title">AI Factories &amp; Infrastructure</div>
+      <div class="stack-companies">
+        <span class="tag highlight">Equinix</span><span class="tag highlight">Digital Realty</span>
+        <span class="tag">Keppel DC REIT</span><span class="tag">Mapletree</span>
+        <span class="tag">Blackstone</span><span class="tag">Brookfield</span>
+        <span class="tag">Cooling</span><span class="tag">Fibre</span><span class="tag">Land</span>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-layer">Layer 2 — Energy &amp; Grid</div>
+      <div class="stack-title">The Power Beneath the Stack</div>
+      <div class="stack-companies">
+        <span class="tag highlight">GE Vernova</span><span class="tag highlight">Schneider Electric</span>
+        <span class="tag highlight">Vertiv</span><span class="tag">Nuclear</span><span class="tag">Gas</span>
+        <span class="tag">Renewables</span><span class="tag">PPAs</span><span class="tag">Grid</span>
+        <span class="tag">Transformers</span><span class="tag">Batteries</span>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-layer">Layer 1 — Capital &amp; Regulation</div>
+      <div class="stack-title">Who Controls the Game</div>
+      <div class="stack-companies">
+        <span class="tag highlight">Sovereign Wealth Funds</span><span class="tag highlight">US Export Controls</span>
+        <span class="tag">Private Equity</span><span class="tag">VC</span><span class="tag">IPOs</span>
+        <span class="tag">EU AI Act</span><span class="tag">China Policy</span>
+        <span class="tag">ETFs</span><span class="tag">Retail Investors</span>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-layer">Cross-Layer</div>
+      <div class="stack-title">Cybersecurity &amp; Trust</div>
+      <div class="stack-companies">
+        <span class="tag highlight">Post-Quantum Crypto</span><span class="tag">Zero Trust</span>
+        <span class="tag">AI Security</span><span class="tag">Identity</span>
+        <span class="tag">Cloud Security</span><span class="tag">NIST PQC</span>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-layer">Layer 7 — Distribution</div>
+      <div class="stack-title">The Consumer Interface</div>
+      <div class="stack-companies">
+        <span class="tag highlight">Apple</span><span class="tag highlight">Microsoft</span>
+        <span class="tag">Google</span><span class="tag">Meta</span>
+        <span class="tag">Enterprise Software</span><span class="tag">Devices</span>
+        <span class="tag">OS</span><span class="tag">App Ecosystems</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- HIDDEN TOLL ROADS -->
+<section id="tollroads">
+<div class="container">
+  <div class="eyebrow">Section 02</div>
+  <h2>The Hidden Toll Roads</h2>
+  <p class="section-intro">The best AI investment opportunities may not be the model companies. The more durable question is: <strong>who collects rent no matter which model wins?</strong></p>
+
+  <div class="pull-quote">
+    Every time an AI model runs an inference, it pays rent to a chip, a data centre, a power grid, and a fibre network. The model companies compete fiercely. The toll road owners collect quietly. Nvidia's Data Centre revenue hit <strong style="color:var(--gold);">$62.3 billion in Q4 FY2026 alone</strong> — up 75% year-on-year. "Blackwell sales are off the charts, and cloud GPUs are sold out." — Jensen Huang, CEO Nvidia, November 2025.
+  </div>
+
+  <div class="toll-grid">
+    <div class="toll-item">
+      <div class="toll-name">GPU Compute</div>
+      <div class="toll-desc">Every model trains and runs on GPUs. Nvidia's stranglehold on AI compute is the defining chokepoint of the current cycle.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">HBM Memory</div>
+      <div class="toll-desc">High Bandwidth Memory is essential for AI workloads. SK Hynix, Micron, and Samsung supply this near-irreplaceable component.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Chip Manufacturing</div>
+      <div class="toll-desc">TSMC manufactures the world's most advanced chips. No TSMC, no AI chips. Taiwan remains the ultimate semiconductor chokepoint.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Semiconductor Equipment</div>
+      <div class="toll-desc">ASML's EUV machines are the only way to manufacture cutting-edge chips. They are effectively a global monopoly.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Data Centre Leases</div>
+      <div class="toll-desc">AI factories must be housed somewhere. Data centre REITs and colocation providers collect rent regardless of which AI wins.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Power Contracts</div>
+      <div class="toll-desc">AI is an electricity story. Utilities, nuclear operators, and power purchase agreement providers are unavoidable counterparties.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Grid Infrastructure</div>
+      <div class="toll-desc">Transformers, substations, cables. GE Vernova, Schneider Electric, and Vertiv supply equipment with years-long backlogs.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Cooling Systems</div>
+      <div class="toll-desc">AI chips generate enormous heat. Liquid cooling, CRAC units, and thermal management are a fast-growing infrastructure layer.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Fibre Networks</div>
+      <div class="toll-desc">Data centres must connect to each other and to users. Subsea cables, dark fibre, and terrestrial networks are the circulatory system.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Cybersecurity</div>
+      <div class="toll-desc">AI infrastructure is a high-value attack surface. Security vendors — especially post-quantum cryptography providers — are mandatory spend.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Cloud Compute</div>
+      <div class="toll-desc">Azure, AWS, and Google Cloud charge for every token processed. Cloud hyperscalers are the metered highway of the AI economy.</div>
+    </div>
+    <div class="toll-item">
+      <div class="toll-name">Sovereign AI Infrastructure</div>
+      <div class="toll-desc">Governments building national AI capacity must buy chips, data centres, and cloud. A new category of captive toll road buyer. <span class="verify">TO VERIFY</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- RETAIL INVESTOR LENS -->
+<section id="investor">
+<div class="container">
+  <div class="eyebrow">Section 03</div>
+  <h2>The Retail Investor Lens</h2>
+  <p class="section-intro">Retail investors may arrive late, after private capital has already captured the cleanest upside. The strategic question is not which AI is best — it is where unavoidable AI spending flows.</p>
+
+  <div class="pull-quote">
+    Private capital captures the model companies. Public markets inherit the risk. Anthropic filed its S-1 confidentially on <strong style="color:var(--gold);">June 1, 2026</strong>, valued at $965 billion — surpassing OpenAI's $852 billion. SpaceX IPO'd on June 12, 2026 at $1.77 trillion. These three IPOs alone could demand <strong style="color:var(--gold);">$200+ billion</strong> from public markets — while the entire US IPO market raised only $45 billion in all of 2025.
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>AI Layer</th>
+        <th>Example Companies</th>
+        <th>Why It Matters</th>
+        <th>Investor Opportunity</th>
+        <th>Key Risk</th>
+        <th>Passive Income</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="key">Chip Compute</td>
+        <td>Nvidia, AMD, Broadcom</td>
+        <td>Every AI workload runs on silicon</td>
+        <td class="green">High — clear revenue link</td>
+        <td class="red">Valuation stretched</td>
+        <td>Low — no dividend culture</td>
+      </tr>
+      <tr>
+        <td class="key">Chip Equipment</td>
+        <td>ASML, Lam Research, AMAT</td>
+        <td>EUV is irreplaceable</td>
+        <td class="teal">Strong — durable moat</td>
+        <td>Export control risk</td>
+        <td>Modest dividends</td>
+      </tr>
+      <tr>
+        <td class="key">Data Centre REITs</td>
+        <td>Equinix, Digital Realty, Keppel DC</td>
+        <td>AI factories need real estate</td>
+        <td class="green">Strong — recurring revenue</td>
+        <td>Power &amp; permitting</td>
+        <td class="gold">High — REIT dividends</td>
+      </tr>
+      <tr>
+        <td class="key">Cloud Hyperscalers</td>
+        <td>Microsoft, Amazon, Google, Oracle</td>
+        <td>Metered AI highway</td>
+        <td class="teal">Solid — embedded revenue</td>
+        <td>Capex intensity</td>
+        <td>Growing buybacks</td>
+      </tr>
+      <tr>
+        <td class="key">Power &amp; Grid</td>
+        <td>GE Vernova, Vertiv, Schneider</td>
+        <td>AI cannot run without electricity</td>
+        <td class="green">Emerging — multi-year orders</td>
+        <td>Execution &amp; backlog</td>
+        <td>Moderate dividends</td>
+      </tr>
+      <tr>
+        <td class="key">Utilities</td>
+        <td>NextEra, Duke, nuclear operators</td>
+        <td>Power purchase agreements</td>
+        <td class="teal">Stable — regulated revenue</td>
+        <td>Grid permitting delays</td>
+        <td class="gold">High — utility dividends</td>
+      </tr>
+      <tr>
+        <td class="key">AI Model Companies</td>
+        <td>OpenAI, Anthropic, xAI</td>
+        <td>Intelligence providers</td>
+        <td class="red">Mostly private — limited access</td>
+        <td>Competition &amp; commoditisation</td>
+        <td>None — pre-revenue</td>
+      </tr>
+      <tr>
+        <td class="key">Cybersecurity</td>
+        <td>CrowdStrike, Palo Alto, quantum security</td>
+        <td>Mandatory AI security spend</td>
+        <td class="teal">Growing — non-discretionary</td>
+        <td>Valuation premium</td>
+        <td>Low</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:1rem; font-size:0.75rem; color:var(--text-muted); font-family:system-ui;">⚠ This is a strategic framework for research and book development, not personalized financial advice.</p>
+</div>
+</section>
+
+<!-- CHAPTER BUILDER -->
+<section id="chapters">
+<div class="container">
+  <div class="eyebrow">Section 04</div>
+  <h2>Chapter Builder</h2>
+  <p class="section-intro">Working chapter seeds for the book. Each chapter will eventually expand with thesis, opening story, evidence, companies, investor implications, geopolitical angle, and risks.</p>
+  <div class="chapter-grid">
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 01</div>
+      <div class="chapter-title">The Day Apple Borrowed a Brain</div>
+      <div class="chapter-hook">Apple — the world's most valuable device company — had to licence intelligence from a competitor. A single moment that reveals how power has shifted from hardware to models.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 02</div>
+      <div class="chapter-title">The New AI Empire</div>
+      <div class="chapter-hook">Who actually owns the new intelligence economy? Not the chatbot users. Not even most of the model companies. Follow the capital to find the empire.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 03</div>
+      <div class="chapter-title">Models Are Not Enough</div>
+      <div class="chapter-hook">Why every AI model company still depends on chips, cloud, power, data, and capital they do not own. Intelligence without infrastructure is just software waiting for a server.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 04</div>
+      <div class="chapter-title">The Hidden Toll Roads</div>
+      <div class="chapter-hook">The infrastructure owners who collect rent no matter which model wins. The most durable AI investments may not be the most famous AI companies.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 05</div>
+      <div class="chapter-title">The AI Factory</div>
+      <div class="chapter-hook">Data centres are the new industrial infrastructure — factories that manufacture intelligence at scale. Land, cooling, fibre, and power are the raw materials.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 06</div>
+      <div class="chapter-title">The Energy Wall</div>
+      <div class="chapter-hook">AI growth is colliding with physical limits. IEA (April 2026): data centre electricity surged 17% in 2025 — AI-focused centres up 50%. By 2030, data centres will consume 950 TWh — equivalent to Japan's entire national electricity consumption today. Virginia's grid zone saw an 833% spike in capacity auction prices. The $1.4 trillion US grid overhaul is now directly linked to AI demand.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 07</div>
+      <div class="chapter-title">When Retail Arrives Late</div>
+      <div class="chapter-hook">SpaceX IPO'd June 12, 2026 at $1.77 trillion. Anthropic filed S-1 June 1, 2026 at $965B private valuation — having grown from $4.1B in early 2023. Anthropic disclosed $47B run-rate revenue in mid-May 2026, adding ~$96M in annualized revenue every single day. These three IPOs could demand $200B+ from a market that raised only $45B in all of 2025. Retail investors price the AI race — after private capital already won it.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 08</div>
+      <div class="chapter-title">The Private Capital Capture</div>
+      <div class="chapter-hook">Venture capital, sovereign wealth funds, private equity, and hyperscaler financing — how the smart money structures itself to own AI before the public can buy in.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 09</div>
+      <div class="chapter-title">The Quantum Clock</div>
+      <div class="chapter-hook">Quantum matters first as a cybersecurity deadline, not a computing breakthrough. Every encrypted system in the world has a countdown timer it cannot see.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 10</div>
+      <div class="chapter-title">The AI Empire Map</div>
+      <div class="chapter-hook">US, China, EU, Gulf, India, Singapore, Malaysia, and Southeast Asia — each playing a different role in the global AI power structure. Not all will win. Some will pay rent forever.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 11</div>
+      <div class="chapter-title">The Labour Bargain Breaks</div>
+      <div class="chapter-hook">IMF: 40% of global jobs exposed to AI — 60% in advanced economies. WEF Future of Jobs 2025: 92 million roles displaced by 2030, 170 million new roles emerge — net gain of 78M, but 41% of employers plan workforce cuts where AI automates. Goldman Sachs: 300 million full-time jobs affected globally. McKinsey: today's AI could automate 57% of current US work tasks. The professional class is not exempt.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 12</div>
+      <div class="chapter-title">The Retail Investor Playbook</div>
+      <div class="chapter-hook">How ordinary investors can think strategically about AI without being trapped by hype, late IPOs, or overcrowded obvious plays. The infrastructure approach.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">Chapter 13</div>
+      <div class="chapter-title">Who Gets Left Behind</div>
+      <div class="chapter-hook">Nations without chips. Companies without data. Workers without skills. Investors without access. The AI power shift produces winners — and it produces a permanent underclass of the unprepared.</div>
+      <span class="chapter-status">Seed — expand</span>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- SOURCE INTELLIGENCE LOG -->
+<section id="sources">
+<div class="container">
+  <div class="eyebrow">Section 05</div>
+  <h2>Source Intelligence Log</h2>
+  <p class="section-intro">The research backbone of the book. Organised by category. Each source will eventually include a summary, key statistic, and chapter relevance mapping.</p>
+  <div class="source-categories">
+
+    <div class="source-cat">
+      <div class="source-cat-title">AI Capex Supercycle</div>
+      <ul class="source-list">
+        <li><a href="https://futurumgroup.com/insights/ai-capex-2026-the-690b-infrastructure-sprint/" target="_blank" style="color:var(--teal);">Futurum: AI Capex 2026 — $690B Sprint</a> (Feb 2026)</li>
+        <li><a href="https://techblog.comsoc.org/2025/12/22/hyperscaler-capex-600-bn-in-2026-a-36-increase-over-2025-while-global-spending-on-cloud-infrastructure-services-skyrockets/" target="_blank" style="color:var(--teal);">IEEE ComSoc: Hyperscaler Capex $600B+</a> (Dec 2025)</li>
+        <li><a href="https://www.tomshardware.com/tech-industry/big-tech/big-techs-ai-spending-plans-reach-725-billion" target="_blank" style="color:var(--teal);">Tom's Hardware: $725B capex — Q1 2026 earnings</a> (Apr 2026)</li>
+        <li>Goldman Sachs: $5.3T combined hyperscaler capex 2025–2030 (Yahoo Finance)</li>
+        <li>Hyperscaler Q4/Q1 2026 Earnings Filings (SEC)</li>
+        <li>McKinsey Global Institute AI Investment Analysis</li>
+      </ul>
+    </div>
+
+    <div class="source-cat">
+      <div class="source-cat-title">Semiconductors</div>
+      <ul class="source-list">
+        <li>Nvidia Annual Reports &amp; Earnings</li>
+        <li>TSMC Technology Reports</li>
+        <li>ASML Annual Reports</li>
+        <li>SK Hynix HBM Roadmap <span class="verify">TO ADD</span></li>
+        <li>Micron AI Memory Reports</li>
+        <li>SemiAnalysis Research</li>
+      </ul>
+    </div>
+
+    <div class="source-cat">
+      <div class="source-cat-title">Data Centres</div>
+      <ul class="source-list">
+        <li>JLL Data Centre Research</li>
+        <li>CBRE Digital Infrastructure</li>
+        <li>Cushman &amp; Wakefield Reports</li>
+        <li>Equinix Investor Presentations</li>
+        <li>Keppel DC REIT Filings</li>
+        <li>Brookfield Infrastructure Reports</li>
+      </ul>
+    </div>
+
+    <div class="source-cat">
+      <div class="source-cat-title">Energy &amp; Grid</div>
+      <ul class="source-list">
+        <li><a href="https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary" target="_blank" style="color:var(--teal);">IEA: Key Questions on Energy and AI</a> (Apr 2026)</li>
+        <li><a href="https://www.iea.org/reports/energy-and-ai/executive-summary" target="_blank" style="color:var(--teal);">IEA: Energy and AI — Flagship Report</a> (2025)</li>
+        <li><a href="https://www.brookings.edu/articles/global-energy-demands-within-the-ai-regulatory-landscape/" target="_blank" style="color:var(--teal);">Brookings: AI Energy &amp; Regulatory Landscape</a> (Apr 2026)</li>
+        <li><a href="https://axis-intelligence.com/ai-data-center-energy-consumption-statistics/" target="_blank" style="color:var(--teal);">Axis Intelligence: Data Centre Energy Stats 2026</a></li>
+        <li>GE Vernova Investor Presentations</li>
+        <li>Vertiv AI Power Infrastructure Reports</li>
+      </ul>
+    </div>
+
+    <div class="source-cat">
+      <div class="source-cat-title">Private Capital &amp; IPOs</div>
+      <ul class="source-list">
+        <li><a href="https://www.cnbc.com/2026/05/28/anthropic-open-ai-startup-value.html" target="_blank" style="color:var(--teal);">CNBC: Anthropic $965B — surpasses OpenAI</a> (May 2026)</li>
+        <li><a href="https://www.klover.ai/openai_ipo_viable_business_indepth_analysis_2026/" target="_blank" style="color:var(--teal);">Klover: OpenAI IPO Analysis 2026</a> (Jun 2026)</li>
+        <li><a href="https://futuresearch.ai/anthropic-openai-ipo-dates-valuations/" target="_blank" style="color:var(--teal);">FutureSearch: Anthropic/OpenAI IPO Valuations</a> (Jun 2026)</li>
+        <li>Anthropic S-1 confidential filing — June 1, 2026 (SEC)</li>
+        <li>SpaceX IPO — June 12, 2026 — $1.77T valuation</li>
+        <li>Goldman Sachs: 2026 IPO proceeds ~$160B projected</li>
+      </ul>
+    </div>
+
+    <div class="source-cat">
+      <div class="source-cat-title">Quantum Computing</div>
+      <ul class="source-list">
+        <li><a href="https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards" target="_blank" style="color:var(--teal);">NIST: First 3 PQC Standards Released</a> (Aug 2024)</li>
+        <li><a href="https://www.ncsc.gov.uk/guidance/pqc-migration-timelines" target="_blank" style="color:var(--teal);">NCSC UK: PQC Migration Timelines</a> (Jun 2025)</li>
+        <li><a href="https://csrc.nist.gov/pubs/ir/8547/ipd" target="_blank" style="color:var(--teal);">NIST IR 8547: Transition to PQC Standards</a> (Nov 2024)</li>
+        <li>US NSM-10: Federal 2035 PQC migration deadline — $7.1B cost</li>
+        <li>IBM Quantum Roadmap &amp; Google Quantum AI Publications</li>
+        <li>McKinsey Quantum Technology Reports</li>
+      </ul>
+    </div>
+
+    <div class="source-cat">
+      <div class="source-cat-title">Regulation &amp; Geopolitics</div>
+      <ul class="source-list">
+        <li>EU AI Act Full Text</li>
+        <li>US BIS Export Control Notices</li>
+        <li>China State Council AI Policy <span class="verify">TO ADD</span></li>
+        <li>Singapore IMDA AI Governance</li>
+        <li>Malaysia MDEC Reports</li>
+        <li>AI Safety Institute Reports</li>
+      </ul>
+    </div>
+
+    <div class="source-cat">
+      <div class="source-cat-title">Labour &amp; Society</div>
+      <ul class="source-list">
+        <li><a href="https://www.imf.org/en/blogs/articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity" target="_blank" style="color:var(--teal);">IMF: AI and the Future of Work — 40% exposure</a> (2024)</li>
+        <li><a href="https://almcorp.com/blog/ai-job-displacement-statistics/" target="_blank" style="color:var(--teal);">ALM: AI Job Displacement Stats 2025-2030</a> (2026)</li>
+        <li>WEF Future of Jobs Report 2025 — 92M displaced, 170M created by 2030</li>
+        <li>Goldman Sachs: 300M jobs affected globally by generative AI</li>
+        <li>McKinsey 2025: Today's AI could automate 57% of US work tasks</li>
+        <li>OECD AI Employment Data &amp; World Bank Digital Economy Reports</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- GLOBAL AI MAP -->
+<section id="global">
+<div class="container">
+  <div class="eyebrow">Section 06</div>
+  <h2>The Global AI Empire Map</h2>
+  <p class="section-intro">AI power is not equally distributed. Each region plays a different role in the global stack — some own models, some own chips, some own capital, some own energy. Not all will win.</p>
+  <div class="region-grid">
+
+    <div class="region-card">
+      <div class="region-name">🇺🇸 United States</div>
+      <div class="region-role">Models · Hyperscalers · Chips · Capital Markets</div>
+      <div class="region-notes">Dominates model development, cloud infrastructure, and capital allocation. Export controls weaponise its semiconductor advantage. The AI hegemon — for now.</div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🇨🇳 China</div>
+      <div class="region-role">Sovereign AI · Domestic Chips · State Strategy</div>
+      <div class="region-notes">Building a parallel AI stack under US export restrictions. DeepSeek demonstrated unexpected efficiency. Long-term goal is full stack independence. <span class="verify">TO MONITOR</span></div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🇹🇼 Taiwan</div>
+      <div class="region-role">Semiconductor Manufacturing Chokepoint</div>
+      <div class="region-notes">TSMC manufactures the world's most advanced AI chips. The single most geopolitically sensitive node in the entire global AI supply chain.</div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🇪🇺 Europe</div>
+      <div class="region-role">Regulation · AI Safety · Energy Constraints</div>
+      <div class="region-notes">The EU AI Act sets global compliance standards. Mistral represents European model ambition. Energy and data sovereignty constraints limit hyperscaler scale.</div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🇸🇬 Singapore</div>
+      <div class="region-role">AI Governance · Finance · Regional Hub</div>
+      <div class="region-notes">Southeast Asia's AI governance leader. Hosts major data centre capacity. Positioned as the neutral broker between US and China AI ecosystems.</div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🇲🇾 Malaysia</div>
+      <div class="region-role">Data Centres · Energy · Johor Corridor</div>
+      <div class="region-notes">Johor's pipeline stands at ~4.0 GW of upcoming power capacity with 700 MW under construction (Nov 2025). Malaysia data centre market valued at $6.14B in 2025, projected $11.4B by 2031. Microsoft committed $2.2B in cloud and AI investment over four years; Google committed $2B+. Microsoft's second Johor cloud region (Southeast Asia 3) announced Nov 2025. <em>(Arizton / DCD / ResearchAndMarkets, 2026)</em></div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🏙 Gulf States</div>
+      <div class="region-role">Capital · Energy · Sovereign AI · Data Centres</div>
+      <div class="region-notes">UAE and Saudi Arabia deploying sovereign wealth into AI infrastructure. G42, NEOM, and ARAMCO AI initiatives. Energy surplus makes them natural data centre hosts.</div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🇮🇳 India</div>
+      <div class="region-role">Talent · Services · Scale · AI Adoption</div>
+      <div class="region-notes">World's largest engineering talent pool. National AI mission investing in compute. Likely to emerge as a major AI services and application layer rather than infrastructure owner.</div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🇯🇵🇰🇷 Japan &amp; Korea</div>
+      <div class="region-role">Chips · Robotics · Memory · Manufacturing</div>
+      <div class="region-notes">SK Hynix (Korea) dominates HBM memory essential for AI. Japan's TSMC fab and Softbank's ARM holdings. Both nations investing in sovereign AI compute.</div>
+    </div>
+
+    <div class="region-card">
+      <div class="region-name">🌏 Southeast Asia</div>
+      <div class="region-role">Data Centre Corridors · Cloud Regions · Digital Infrastructure</div>
+      <div class="region-notes">Indonesia, Thailand, Vietnam emerging as cloud region targets. Cheap energy and growing digital economies attract hyperscaler investment. Bandwidth infrastructure still developing.</div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- QUANTUM COMPUTING -->
+<section id="quantum">
+<div class="container">
+  <div class="eyebrow">Section 07</div>
+  <h2>The Quantum Clock</h2>
+  <p class="section-intro">Quantum computing is not primarily a chatbot story. It is first a cybersecurity deadline — and then a future compute frontier that changes everything beneath the AI stack.</p>
+
+  <div class="pull-quote">
+    AI is the current compute supercycle. Quantum is the next. But quantum matters first as a security deadline. NIST finalized its first three post-quantum cryptographic standards in <strong style="color:var(--teal);">August 2024</strong> (ML-KEM, ML-DSA, SLH-DSA). The US government has set a <strong style="color:var(--teal);">2035 deadline</strong> for federal systems to migrate — at an estimated cost of $7.1 billion for non-NSS systems alone. Every encrypted system in the world has a countdown timer it cannot see.
+  </div>
+
+  <div class="quantum-grid">
+
+    <div class="quantum-pillar">
+      <div class="quantum-title">Post-Quantum Security</div>
+      <div class="quantum-desc">Current public-key encryption (RSA, ECC) will be broken by sufficiently powerful quantum computers. The "harvest now, decrypt later" threat means adversaries are collecting encrypted data today to decrypt tomorrow.</div>
+      <ul class="source-list" style="margin-top:0.5rem;">
+        <li>NIST PQC Standards (CRYSTALS-Kyber, Dilithium)</li>
+        <li>Financial system migration timelines</li>
+        <li>Cloud infrastructure re-keying costs</li>
+        <li>AI infrastructure vulnerability exposure</li>
+      </ul>
+    </div>
+
+    <div class="quantum-pillar">
+      <div class="quantum-title">Specialist Acceleration</div>
+      <div class="quantum-desc">Near-term quantum advantage in specific optimisation problems: drug discovery, materials science, logistics, portfolio optimisation, grid balancing, battery chemistry, and chip design.</div>
+      <ul class="source-list" style="margin-top:0.5rem;">
+        <li>IBM Quantum roadmap milestones</li>
+        <li>Google Willow quantum supremacy claims <span class="verify">TO VERIFY</span></li>
+        <li>Pharmaceutical quantum partnerships</li>
+        <li>Financial services optimisation use cases</li>
+      </ul>
+    </div>
+
+    <div class="quantum-pillar">
+      <div class="quantum-title">Strategic Optionality</div>
+      <div class="quantum-desc">Cloud quantum services, defence applications, sovereign quantum programmes, deep-tech venture capital, and national lab investments. Quantum as geopolitical technology race alongside AI.</div>
+      <ul class="source-list" style="margin-top:0.5rem;">
+        <li>IonQ, Rigetti, D-Wave, PsiQuantum</li>
+        <li>Microsoft Azure Quantum roadmap</li>
+        <li>National quantum initiatives (US, EU, China)</li>
+        <li>Quantinuum enterprise deployments</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- WATCHLIST FRAMEWORK -->
+<section id="watchlist">
+<div class="container">
+  <div class="eyebrow">Section 08</div>
+  <h2>Watchlist Framework</h2>
+  <p class="section-intro">A strategic scoring framework — not a stock-picking page. The goal is to think clearly about who benefits directly, who is overhyped, and who has durable cash flow.</p>
+
+  <div class="score-legend">
+    <span class="score-badge score-5">5 — Core Infrastructure Winner</span>
+    <span class="score-badge score-4">4 — Strong Beneficiary</span>
+    <span class="score-badge score-3">3 — Possible Beneficiary</span>
+    <span class="score-badge score-2">2 — Hype-Sensitive</span>
+    <span class="score-badge score-1">1 — Too Speculative</span>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Company / Sector</th>
+        <th>Stack Layer</th>
+        <th>Region</th>
+        <th>Revenue Link to AI</th>
+        <th>Passive Income</th>
+        <th>Valuation Risk</th>
+        <th>Score</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="key">Nvidia</td>
+        <td>Chips</td>
+        <td>US</td>
+        <td class="green">Direct — GPU revenue</td>
+        <td>Low</td>
+        <td class="red">High — extreme PE</td>
+        <td class="green">5</td>
+        <td>The defining AI infrastructure winner. Moat is real but valuation stretched.</td>
+      </tr>
+      <tr>
+        <td class="key">ASML</td>
+        <td>Chip Equipment</td>
+        <td>Netherlands</td>
+        <td class="green">Direct — EUV monopoly</td>
+        <td>Modest</td>
+        <td>Moderate</td>
+        <td class="green">5</td>
+        <td>No EUV, no advanced chips. Near-irreplaceable strategic position.</td>
+      </tr>
+      <tr>
+        <td class="key">TSMC</td>
+        <td>Chip Manufacturing</td>
+        <td>Taiwan</td>
+        <td class="green">Direct — all AI chips</td>
+        <td>Modest</td>
+        <td class="red">Geopolitical risk</td>
+        <td class="green">5</td>
+        <td>The ultimate chokepoint. Geopolitical risk is real and unresolvable short-term.</td>
+      </tr>
+      <tr>
+        <td class="key">Equinix</td>
+        <td>Data Centres</td>
+        <td>Global</td>
+        <td class="teal">Strong — AI colocation</td>
+        <td class="gold">High — REIT</td>
+        <td>Moderate</td>
+        <td class="green">5</td>
+        <td>Recurring revenue, global footprint, REIT structure provides passive income.</td>
+      </tr>
+      <tr>
+        <td class="key">GE Vernova</td>
+        <td>Grid / Energy</td>
+        <td>US/Global</td>
+        <td class="teal">Strong — grid equipment</td>
+        <td>Growing</td>
+        <td>Moderate</td>
+        <td class="teal">4</td>
+        <td>Transformer and grid equipment backlog extends years. AI power demand is structural.</td>
+      </tr>
+      <tr>
+        <td class="key">Microsoft</td>
+        <td>Cloud / Distribution</td>
+        <td>US</td>
+        <td class="green">Direct — Azure + Copilot</td>
+        <td>Growing</td>
+        <td>Moderate</td>
+        <td class="teal">4</td>
+        <td>OpenAI partnership embeds AI revenue across enterprise. Durable moat.</td>
+      </tr>
+      <tr>
+        <td class="key">Keppel DC REIT</td>
+        <td>Data Centres</td>
+        <td>Singapore/Asia</td>
+        <td class="teal">Strong — AI data centres</td>
+        <td class="gold">High — REIT</td>
+        <td>Low-moderate</td>
+        <td class="teal">4</td>
+        <td>Asia-Pacific exposure, SGD-relevant for Professor Dr. Tan's portfolio. <span class="verify">TO VERIFY</span></td>
+      </tr>
+      <tr>
+        <td class="key">OpenAI / Anthropic</td>
+        <td>Models</td>
+        <td>US</td>
+        <td class="green">Direct — model revenue</td>
+        <td>None</td>
+        <td class="red">High — private, no access</td>
+        <td class="gold">3</td>
+        <td>Brilliant companies. Public investors cannot easily access. Competition intensifying.</td>
+      </tr>
+      <tr>
+        <td class="key">AI ETFs</td>
+        <td>Diversified</td>
+        <td>US/Global</td>
+        <td>Indirect — basket exposure</td>
+        <td>Low</td>
+        <td class="red">Index crowding risk</td>
+        <td style="color:#f59e0b;">2</td>
+        <td>Useful but often overweight obvious names. Check holdings carefully. Late-cycle risk.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:1rem; font-size:0.75rem; color:var(--text-muted); font-family:system-ui;">⚠ Strategic framework only. Not personalized financial advice. All figures require independent verification.</p>
+</div>
+</section>
+
+<!-- NEXT RESEARCH QUESTIONS -->
+<section id="questions" style="border-bottom:none;">
+<div class="container">
+  <div class="eyebrow">Section 09</div>
+  <h2>Next Research Questions</h2>
+  <p class="section-intro">The open questions that will drive the next phase of research and chapter development.</p>
+  <div class="questions-list">
+    <div class="question-item">How much electricity does one ChatGPT query consume vs one Google search? What does this mean at a billion queries per day?</div>
+    <div class="question-item">Which sovereign wealth funds have taken direct positions in Anthropic, OpenAI, or xAI? At what valuations?</div>
+    <div class="question-item">What is the realistic timeline for quantum computers to break RSA-2048 encryption? Best estimates from NIST and IBM?</div>
+    <div class="question-item">How much of Malaysia's Johor data centre boom is driven by Singapore overflow vs genuine regional AI demand?</div>
+    <div class="question-item">What percentage of Nvidia's revenue comes from the top five hyperscalers? How concentrated is this dependency?</div>
+    <div class="question-item">When is OpenAI expected to file for IPO? What is the current private valuation and implied public market entry price?</div>
+    <div class="question-item">How does DeepSeek's efficiency advantage change the economics of the AI stack? Does it help or hurt Nvidia?</div>
+    <div class="question-item">What is the current global transformer shortage situation? Lead times, pricing, and which companies are benefiting?</div>
+    <div class="question-item">Which Gulf state AI initiatives are most credibly capitalised vs which are largely announcement-driven?</div>
+    <div class="question-item">What is the IMF's current estimate of AI job displacement by profession and region over the next ten years?</div>
+    <div class="question-item">How does the EU AI Act affect non-European companies selling AI services into Europe? What are the compliance costs?</div>
+    <div class="question-item">What is the realistic passive income strategy for a retail investor wanting AI infrastructure exposure with dividend yield?</div>
+  </div>
+</div>
+</section>
+
+<section style="background:var(--surface2);border-top:1px solid var(--border);padding:3rem 0;">
+<div class="container">
+  <div class="eyebrow">Research Intelligence — Last Updated</div>
+  <h2 style="font-size:1.3rem;margin-bottom:1.5rem;">Live Source Log — June 12, 2026</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.75rem;">
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:var(--gold);">Hyperscaler Capex</strong> — Big Four spend $725B in 2026, up 77% YoY. Amazon $200B, Google $175–190B, Microsoft $190B, Meta $115–135B. Source: FT Q1 2026 earnings compilation; Tom's Hardware Apr 2026.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:var(--gold);">Nvidia Data Centre</strong> — Q4 FY2026 revenue $62.3B, up 75% YoY. Full-year FY2026 data centre revenue record. Hyperscalers = 50%+ of data centre revenue. Source: Nvidia SEC 8-K, Feb 2026.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:var(--teal);">AI Energy (IEA)</strong> — Data centre electricity hit 485 TWh in 2025 (+17% YoY). AI-focused centres +50%. Projected to double to 950 TWh by 2030 — equivalent to Japan's total electricity. AI-focused centres to triple. Source: IEA Key Questions on Energy and AI, April 2026.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:var(--teal);">Malaysia Data Centres</strong> — Market $6.14B (2025), projected $11.4B by 2031. Johor pipeline ~4.0 GW. Microsoft $2.2B committed, Google $2B+. Southeast Asia 3 cloud region announced for Johor. Source: Arizton / DCD / ResearchAndMarkets, 2026.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid #e05252;border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:#e05252;">Anthropic &amp; OpenAI IPO Race</strong> — Anthropic Series H: $65B raised at $965B valuation (May 2026), surpasses OpenAI ($852B). Anthropic S-1 filed June 1, 2026. Run-rate revenue $47B (May 2026). SpaceX IPO June 12, 2026 at $1.77T. Source: CNBC, Al Jazeera, FutureSearch, June 2026.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid #e05252;border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:#e05252;">Labour Displacement</strong> — IMF: 40% global jobs exposed to AI, 60% in advanced economies. WEF 2025: 92M displaced, 170M new roles by 2030. Goldman: 300M jobs affected globally. McKinsey: 57% of US work tasks automatable today. Source: IMF 2024, WEF 2025, Goldman Sachs.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:var(--teal);">Post-Quantum Cryptography</strong> — NIST finalized ML-KEM, ML-DSA, SLH-DSA standards August 2024. HQC backup selected March 2025. US federal 2035 migration deadline. Est. cost $7.1B for non-NSS systems alone. Source: NIST, NCSC UK, US NSM-10.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:var(--gold);">Grid Infrastructure</strong> — $1.4T US grid overhaul underway across 51 utilities, directly linked to AI demand. Virginia grid capacity auction prices up 833%. Tech sector = 40% of all corporate renewables PPAs signed in 2025. Source: Axis Intelligence / IEA 2026.
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><span>The AI Power Shift</span> — Research &amp; Book Intelligence Platform</p>
+    <p style="margin-top:0.5rem;">Prof Dr Teik Kheong Tan · Stanford University · Version 2.0 · June 12, 2026 · Research verified from live sources — verify before publication</p>
+  </div>
+</footer>
+
+</body>
+</html>
