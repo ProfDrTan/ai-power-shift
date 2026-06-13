@@ -624,32 +624,132 @@
     h2 { font-size: 1.5rem; }
   }
 
-  /* SEARCH */
-  .search-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.85); z-index:999; padding:80px 1rem 2rem; }
-  .search-overlay.active { display:flex; flex-direction:column; align-items:center; }
-  .search-box { width:100%; max-width:680px; font-family:system-ui; font-size:1rem; padding:0.85rem 1.25rem; background:var(--surface2); border:2px solid var(--gold); border-radius:8px; color:var(--text); outline:none; }
-  .search-results { width:100%; max-width:680px; margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; max-height:60vh; overflow-y:auto; }
-  .search-result-item { padding:0.9rem 1.1rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; cursor:pointer; }
-  .search-result-item:hover { border-color:var(--gold-dim); }
-  .search-result-title { font-family:system-ui; font-size:0.85rem; font-weight:700; color:var(--gold); margin-bottom:0.3rem; }
-  .search-result-snippet { font-size:0.78rem; color:var(--text-dim); line-height:1.5; }
-  .search-result-snippet em { background:rgba(201,168,76,0.2); color:var(--gold); font-style:normal; padding:0 2px; border-radius:2px; }
-  .search-close { position:absolute; top:16px; right:20px; font-family:system-ui; font-size:1.5rem; color:var(--text-dim); cursor:pointer; background:none; border:none; }
-  .search-btn { background:none; border:1px solid var(--border); color:var(--text-dim); font-family:system-ui; font-size:0.75rem; padding:0.3rem 0.8rem; border-radius:4px; cursor:pointer; letter-spacing:0.05em; display:flex; align-items:center; gap:6px; }
-  .search-btn:hover { border-color:var(--gold-dim); color:var(--gold); }
+  
+  /* ===== SEARCH ===== */
+  #searchOverlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(5,8,18,0.97);
+    z-index: 99999;
+    padding: 70px 16px 20px;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+  }
+  #searchOverlay.active { display: block; }
+  #searchBox {
+    width: 100%;
+    max-width: 660px;
+    display: block;
+    margin: 0 auto 12px;
+    font-size: 1rem;
+    font-family: system-ui, sans-serif;
+    padding: 14px 16px;
+    background: #1a2235;
+    border: 2px solid #c9a84c;
+    border-radius: 8px;
+    color: #e8e0d0;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+  }
+  #searchResults {
+    width: 100%;
+    max-width: 660px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 65vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sr-item {
+    padding: 12px 14px;
+    background: #111827;
+    border: 1px solid #1e2d45;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+  .sr-title { font-family: system-ui; font-size: 0.85rem; font-weight: 700; color: #c9a84c; margin-bottom: 4px; }
+  .sr-snip { font-size: 0.78rem; color: #8a9ab5; line-height: 1.5; }
+  .sr-snip em { background: rgba(201,168,76,0.2); color: #c9a84c; font-style: normal; padding: 0 3px; border-radius: 2px; }
+  #searchClose {
+    position: fixed;
+    top: 14px; right: 18px;
+    font-size: 1.6rem;
+    color: #8a9ab5;
+    cursor: pointer;
+    background: none;
+    border: none;
+    z-index: 100000;
+    padding: 8px;
+    line-height: 1;
+  }
+  #searchNoResult { font-family: system-ui; font-size: 0.85rem; color: #4a5a72; padding: 16px; text-align: center; }
 
-  /* WHATS NEW */
-  .whats-new { position:fixed; bottom:1.5rem; right:1.5rem; z-index:200; }
-  .whats-new-btn { background:var(--gold); color:#0a0e1a; font-family:system-ui; font-size:0.75rem; font-weight:700; padding:0.6rem 1rem; border-radius:20px; border:none; cursor:pointer; letter-spacing:0.06em; text-transform:uppercase; box-shadow:0 4px 20px rgba(201,168,76,0.4); }
-  .whats-new-panel { display:none; position:absolute; bottom:3rem; right:0; width:300px; background:var(--surface); border:1px solid var(--gold-dim); border-radius:10px; padding:1.25rem; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
-  .whats-new-panel.open { display:block; }
-  .whats-new-title { font-family:system-ui; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem; }
-  .whats-new-item { padding:0.5rem 0; border-bottom:1px solid var(--border); }
-  .whats-new-item:last-child { border-bottom:none; padding-bottom:0; }
-  .whats-new-item a { font-family:system-ui; font-size:0.8rem; color:var(--text); text-decoration:none; display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
-  .whats-new-item a:hover { color:var(--gold); }
-  .whats-new-item .badge { font-size:0.6rem; background:rgba(201,168,76,0.15); color:var(--gold); border:1px solid var(--gold-dim); border-radius:3px; padding:1px 5px; flex-shrink:0; margin-top:2px; letter-spacing:0.05em; text-transform:uppercase; }
-  .whats-new-item .badge.breaking { background:rgba(224,82,82,0.15); color:#e05252; border-color:#e05252; }
+  /* ===== SEARCH NAV BTN ===== */
+  .nav-search-btn {
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    background: none;
+    border: 1px solid #1e2d45;
+    color: #8a9ab5;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+  .nav-search-btn:hover { border-color: #c9a84c; color: #c9a84c; }
+
+  /* ===== WHATS NEW ===== */
+  #wnBtn {
+    position: fixed;
+    bottom: 20px; right: 16px;
+    z-index: 9999;
+    background: #c9a84c;
+    color: #0a0e1a;
+    font-family: system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(201,168,76,0.5);
+    -webkit-tap-highlight-color: transparent;
+  }
+  #wnPanel {
+    display: none;
+    position: fixed;
+    bottom: 70px; right: 16px;
+    z-index: 9998;
+    width: min(320px, calc(100vw - 32px));
+    background: #111827;
+    border: 1px solid #c9a84c;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  #wnPanel.open { display: block; }
+  .wn-head { font-family: system-ui; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a84c; margin-bottom: 10px; }
+  .wn-item { border-bottom: 1px solid #1e2d45; padding: 8px 0; }
+  .wn-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .wn-item a { display: flex; align-items: flex-start; gap: 8px; text-decoration: none; color: #e8e0d0; font-family: system-ui; font-size: 0.8rem; line-height: 1.4; -webkit-tap-highlight-color: transparent; }
+  .wn-item a:hover, .wn-item a:active { color: #c9a84c; }
+  .wn-badge { flex-shrink: 0; margin-top: 2px; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; }
+  .wn-badge.brk { background: rgba(224,82,82,0.15); color: #e05252; border: 1px solid #e05252; }
+  .wn-badge.new { background: rgba(201,168,76,0.15); color: #c9a84c; border: 1px solid #8a6e2f; }
+  .wn-badge.upd { background: rgba(45,212,191,0.1); color: #2dd4bf; border: 1px solid #1a7a6e; }
 </style>
 </head>
 <body>
@@ -657,8 +757,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-brand">The AI Power Shift</div>
-  <button class="search-btn" onclick="openSearch()">🔍 Search</button>
-  <ul class="nav-links">
+  <button class="nav-search-btn" id="navSearchBtn">🔍 Search</button><ul class="nav-links">
     <li><a href="#stack">Power Stack</a></li>
     <li><a href="#tollroads">Toll Roads</a></li>
     <li><a href="#investor">Investor Lens</a></li>
@@ -1617,85 +1716,93 @@
 </footer>
 
 
-<!-- SEARCH OVERLAY -->
-<div class="search-overlay" id="searchOverlay">
-  <button class="search-close" onclick="closeSearch()">✕</button>
-  <input class="search-box" id="searchBox" placeholder="Search the AI Power Shift... (e.g. Nvidia, SpaceX, Malaysia, quantum)" oninput="runSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearch()">
-  <div class="search-results" id="searchResults"></div>
+
+<!-- WHATS NEW FLOATING -->
+<button id="wnBtn" onclick="toggleWN()">⚡ What's New</button>
+<div id="wnPanel">
+  <div class="wn-head">⚡ What's New — June 13, 2026</div>
+  <div class="wn-item"><a href="#spacex-ipo" onclick="closeWN()"><span class="wn-badge brk">Breaking</span>SpaceX IPO — $2T market cap, 19% Day 1 gain. Retail investor trap confirmed.</a></div>
+  <div class="wn-item"><a href="#week25" onclick="closeWN()"><span class="wn-badge new">New</span>Nvidia Blackwell — $81.6B Q1 FY2027 revenue, 85% YoY. Vera Rubin shipping now.</a></div>
+  <div class="wn-item"><a href="#hero" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Hero — $725B capex, 950 TWh energy, 40% job exposure stats live.</a></div>
+  <div class="wn-item"><a href="#tollroads" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Hidden Toll Roads — Nvidia 13x data centre growth since ChatGPT.</a></div>
+  <div class="wn-item"><a href="#investor" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Retail Investor Lens — Anthropic $965B S-1 + SpaceX IPO case study.</a></div>
+  <div class="wn-item"><a href="#sources" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Sources — Live links to IEA, NIST, SEC filings, CNBC added.</a></div>
 </div>
 
-<!-- WHAT'S NEW FLOATING BUTTON -->
-<div class="whats-new">
-  <div class="whats-new-panel" id="whatsNewPanel">
-    <div class="whats-new-title">⚡ What's New — June 13, 2026</div>
-    <div class="whats-new-item"><a href="#spacex-ipo"><span class="badge breaking">Breaking</span>SpaceX IPO Day 1 — $2T market cap, 19% first-day gain, retail investor trap confirmed</a></div>
-    <div class="whats-new-item"><a href="#week25"><span class="badge">New</span>Nvidia Blackwell Update — $81.6B Q1 FY2027 revenue, 85% YoY growth, Vera Rubin shipping</a></div>
-    <div class="whats-new-item"><a href="#hero"><span class="badge">Updated</span>Hero stats — $725B hyperscaler capex, 950 TWh energy demand, 40% job exposure</a></div>
-    <div class="whats-new-item"><a href="#tollroads"><span class="badge">Updated</span>Hidden Toll Roads — Nvidia 13x data centre growth since ChatGPT launch</a></div>
-    <div class="whats-new-item"><a href="#investor"><span class="badge">Updated</span>Retail Investor Lens — Anthropic $965B S-1, SpaceX $1.77T IPO case study</a></div>
-    <div class="whats-new-item"><a href="#sources"><span class="badge">Updated</span>Source Log — live links to IEA, NIST, CNBC, SEC filings added</a></div>
-  </div>
-  <button class="whats-new-btn" onclick="toggleWhatsNew()">⚡ What's New</button>
+<!-- SEARCH OVERLAY -->
+<div id="searchOverlay">
+  <button id="searchClose" onclick="closeSearch()">✕</button>
+  <input id="searchBox" type="search" placeholder="Search... e.g. Nvidia, SpaceX, Malaysia, quantum" autocomplete="off" autocorrect="off" spellcheck="false">
+  <div id="searchResults"></div>
 </div>
 
 <script>
-// SEARCH
-function openSearch() {
-  document.getElementById('searchOverlay').classList.add('active');
-  setTimeout(() => document.getElementById('searchBox').focus(), 100);
-}
-function closeSearch() {
-  document.getElementById('searchOverlay').classList.remove('active');
-  document.getElementById('searchBox').value = '';
-  document.getElementById('searchResults').innerHTML = '';
-}
-document.addEventListener('keydown', e => { if(e.key==='/' && !e.ctrlKey) { e.preventDefault(); openSearch(); } });
-
-function runSearch(q) {
-  const res = document.getElementById('searchResults');
-  if (q.length < 2) { res.innerHTML = ''; return; }
-  const sections = document.querySelectorAll('section, .stack-card, .toll-item, .chapter-card, .region-card, .quantum-pillar');
-  const results = [];
-  const ql = q.toLowerCase();
-  sections.forEach(s => {
-    const text = s.innerText;
-    const tl = text.toLowerCase();
-    const idx = tl.indexOf(ql);
-    if (idx === -1) return;
-    const heading = s.querySelector('h2,h3,.stack-title,.toll-name,.chapter-title,.region-name,.quantum-title,.eyebrow');
-    const title = heading ? heading.innerText.trim() : 'Section';
-    const start = Math.max(0, idx - 60);
-    const end = Math.min(text.length, idx + q.length + 100);
-    let snippet = text.substring(start, end).replace(/
-+/g,' ').trim();
-    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\]/g,'\$&') + ')', 'gi');
-    snippet = snippet.replace(re, '<em>$1</em>');
-    const anchor = s.id ? '#' + s.id : '';
-    results.push({title, snippet, anchor, el: s});
-  });
-  if (results.length === 0) {
-    res.innerHTML = '<div style="font-family:system-ui;font-size:0.85rem;color:var(--text-muted);padding:1rem;">No results found for "' + q + '"</div>';
-    return;
+(function(){
+  // --- SEARCH ---
+  function openSearch(){
+    var o=document.getElementById('searchOverlay');
+    o.classList.add('active');
+    setTimeout(function(){ document.getElementById('searchBox').focus(); },150);
   }
-  res.innerHTML = results.slice(0,8).map(r =>
-    '<div class="search-result-item" onclick="goTo('' + r.anchor + '');closeSearch()"><div class="search-result-title">' + r.title + '</div><div class="search-result-snippet">' + r.snippet + '</div></div>'
-  ).join('');
-}
+  function closeSearch(){
+    document.getElementById('searchOverlay').classList.remove('active');
+    document.getElementById('searchBox').value='';
+    document.getElementById('searchResults').innerHTML='';
+  }
+  window.closeSearch=closeSearch;
 
-function goTo(anchor) {
-  if (!anchor) return;
-  const el = document.querySelector(anchor);
-  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
-}
+  document.getElementById('navSearchBtn').addEventListener('click', openSearch);
+  document.getElementById('searchBox').addEventListener('input', function(){ doSearch(this.value); });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){ closeSearch(); closeWN(); }
+    if(e.key==='/' && document.activeElement.tagName!=='INPUT'){ e.preventDefault(); openSearch(); }
+  });
 
-// WHATS NEW
-function toggleWhatsNew() {
-  document.getElementById('whatsNewPanel').classList.toggle('open');
-}
-document.addEventListener('click', e => {
-  const wn = document.querySelector('.whats-new');
-  if (wn && !wn.contains(e.target)) document.getElementById('whatsNewPanel').classList.remove('open');
-});
+  function doSearch(q){
+    var res=document.getElementById('searchResults');
+    q=q.trim();
+    if(q.length<2){ res.innerHTML=''; return; }
+    var nodes=document.querySelectorAll('section, .stack-card, .toll-item, .chapter-card, .region-card, .quantum-pillar, .source-cat');
+    var hits=[];
+    var ql=q.toLowerCase();
+    nodes.forEach(function(n){
+      var txt=n.innerText||n.textContent||'';
+      var tl=txt.toLowerCase();
+      var idx=tl.indexOf(ql);
+      if(idx===-1) return;
+      var h=n.querySelector('h2,h3,.stack-title,.toll-name,.chapter-title,.region-name,.quantum-title,.eyebrow,.source-cat-title');
+      var title=h?h.innerText.trim():'Section';
+      var s=Math.max(0,idx-50), e2=Math.min(txt.length,idx+q.length+120);
+      var snip=txt.substring(s,e2).replace(/\s+/g,' ').trim();
+      var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+      snip=snip.replace(re,'<em>$1</em>');
+      var anchor=n.id?'#'+n.id:'';
+      hits.push({title:title,snip:snip,anchor:anchor});
+    });
+    if(hits.length===0){
+      res.innerHTML='<div id="searchNoResult">No results for &ldquo;'+q+'&rdquo;</div>';
+      return;
+    }
+    res.innerHTML=hits.slice(0,8).map(function(h){
+      return '<a class="sr-item" href="'+h.anchor+'" onclick="closeSearch()"><div class="sr-title">'+h.title+'</div><div class="sr-snip">'+h.snip+'</div></a>';
+    }).join('');
+  }
+
+  // --- WHATS NEW ---
+  window.toggleWN=function(){
+    document.getElementById('wnPanel').classList.toggle('open');
+  };
+  window.closeWN=function(){
+    document.getElementById('wnPanel').classList.remove('open');
+  };
+  document.addEventListener('click',function(e){
+    var panel=document.getElementById('wnPanel');
+    var btn=document.getElementById('wnBtn');
+    if(panel && btn && !panel.contains(e.target) && !btn.contains(e.target)){
+      panel.classList.remove('open');
+    }
+  });
+})();
 </script>
 </body>
 </html>
