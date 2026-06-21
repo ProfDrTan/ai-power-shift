@@ -423,6 +423,19 @@
     text-transform: uppercase;
   }
 
+  .chapter-card--new {
+    border-left: 3px solid var(--gold);
+    background: linear-gradient(135deg, #111827 0%, #1a1a0f 100%);
+  }
+
+  .chapter-card--new .chapter-num { color: var(--gold); }
+
+  .chapter-card--new .chapter-status {
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    border-color: var(--gold-dim);
+  }
+
   /* SOURCES */
   .source-categories {
     display: grid;
@@ -623,133 +636,6 @@
     .nav-links { display: none; }
     h2 { font-size: 1.5rem; }
   }
-
-  
-  /* ===== SEARCH ===== */
-  #searchOverlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(5,8,18,0.97);
-    z-index: 99999;
-    padding: 70px 16px 20px;
-    box-sizing: border-box;
-    -webkit-overflow-scrolling: touch;
-  }
-  #searchOverlay.active { display: block; }
-  #searchBox {
-    width: 100%;
-    max-width: 660px;
-    display: block;
-    margin: 0 auto 12px;
-    font-size: 1rem;
-    font-family: system-ui, sans-serif;
-    padding: 14px 16px;
-    background: #1a2235;
-    border: 2px solid #c9a84c;
-    border-radius: 8px;
-    color: #e8e0d0;
-    outline: none;
-    box-sizing: border-box;
-    -webkit-appearance: none;
-  }
-  #searchResults {
-    width: 100%;
-    max-width: 660px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 65vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .sr-item {
-    padding: 12px 14px;
-    background: #111827;
-    border: 1px solid #1e2d45;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    display: block;
-  }
-  .sr-title { font-family: system-ui; font-size: 0.85rem; font-weight: 700; color: #c9a84c; margin-bottom: 4px; }
-  .sr-snip { font-size: 0.78rem; color: #8a9ab5; line-height: 1.5; }
-  .sr-snip em { background: rgba(201,168,76,0.2); color: #c9a84c; font-style: normal; padding: 0 3px; border-radius: 2px; }
-  #searchClose {
-    position: fixed;
-    top: 14px; right: 18px;
-    font-size: 1.6rem;
-    color: #8a9ab5;
-    cursor: pointer;
-    background: none;
-    border: none;
-    z-index: 100000;
-    padding: 8px;
-    line-height: 1;
-  }
-  #searchNoResult { font-family: system-ui; font-size: 0.85rem; color: #4a5a72; padding: 16px; text-align: center; }
-
-  /* ===== SEARCH NAV BTN ===== */
-  .nav-search-btn {
-    font-family: system-ui, sans-serif;
-    font-size: 0.75rem;
-    background: none;
-    border: 1px solid #1e2d45;
-    color: #8a9ab5;
-    padding: 5px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    margin-right: 12px;
-    white-space: nowrap;
-  }
-  .nav-search-btn:hover { border-color: #c9a84c; color: #c9a84c; }
-
-  /* ===== WHATS NEW ===== */
-  #wnBtn {
-    position: fixed;
-    bottom: 20px; right: 16px;
-    z-index: 9999;
-    background: #c9a84c;
-    color: #0a0e1a;
-    font-family: system-ui, sans-serif;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 24px;
-    padding: 10px 18px;
-    cursor: pointer;
-    box-shadow: 0 4px 24px rgba(201,168,76,0.5);
-    -webkit-tap-highlight-color: transparent;
-  }
-  #wnPanel {
-    display: none;
-    position: fixed;
-    bottom: 70px; right: 16px;
-    z-index: 9998;
-    width: min(320px, calc(100vw - 32px));
-    background: #111827;
-    border: 1px solid #c9a84c;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.7);
-    max-height: 70vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  #wnPanel.open { display: block; }
-  .wn-head { font-family: system-ui; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a84c; margin-bottom: 10px; }
-  .wn-item { border-bottom: 1px solid #1e2d45; padding: 8px 0; }
-  .wn-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .wn-item a { display: flex; align-items: flex-start; gap: 8px; text-decoration: none; color: #e8e0d0; font-family: system-ui; font-size: 0.8rem; line-height: 1.4; -webkit-tap-highlight-color: transparent; }
-  .wn-item a:hover, .wn-item a:active { color: #c9a84c; }
-  .wn-badge { flex-shrink: 0; margin-top: 2px; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; }
-  .wn-badge.brk { background: rgba(224,82,82,0.15); color: #e05252; border: 1px solid #e05252; }
-  .wn-badge.new { background: rgba(201,168,76,0.15); color: #c9a84c; border: 1px solid #8a6e2f; }
-  .wn-badge.upd { background: rgba(45,212,191,0.1); color: #2dd4bf; border: 1px solid #1a7a6e; }
 </style>
 </head>
 <body>
@@ -757,7 +643,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-brand">The AI Power Shift</div>
-  <button class="nav-search-btn" id="navSearchBtn">🔍 Search</button><ul class="nav-links">
+  <ul class="nav-links">
     <li><a href="#stack">Power Stack</a></li>
     <li><a href="#tollroads">Toll Roads</a></li>
     <li><a href="#investor">Investor Lens</a></li>
@@ -1140,8 +1026,8 @@
     <div class="chapter-card">
       <div class="chapter-num">Chapter 09</div>
       <div class="chapter-title">The Quantum Clock</div>
-      <div class="chapter-hook">Quantum matters first as a cybersecurity deadline, not a computing breakthrough. Every encrypted system in the world has a countdown timer it cannot see.</div>
-      <span class="chapter-status">Seed — expand</span>
+      <div class="chapter-hook">Quantum matters first as a cybersecurity deadline, not a computing breakthrough. Every encrypted system in the world has a countdown timer it cannot see. And now AI is accelerating the clock from a different direction entirely — models that find vulnerabilities at a rate no human team can match. Claude Opus 4.6 found over 500 open-source vulnerabilities in February 2026. Two months later, Mythos found thousands — including flaws in every major operating system and browser. The average time from vulnerability disclosure to active exploitation has collapsed from 2.3 years in 2018 to 20 hours as of April 2026. The cybersecurity chapter of the AI power shift is not coming. It is already here.</div>
+      <span class="chapter-status">Updated — June 21, 2026</span>
     </div>
 
     <div class="chapter-card">
@@ -1170,6 +1056,20 @@
       <div class="chapter-title">Who Gets Left Behind</div>
       <div class="chapter-hook">Nations without chips. Companies without data. Workers without skills. Investors without access. The AI power shift produces winners — and it produces a permanent underclass of the unprepared.</div>
       <span class="chapter-status">Seed — expand</span>
+    </div>
+
+    <div class="chapter-card chapter-card--new">
+      <div class="chapter-num">Chapter 14 — New · June 14, 2026</div>
+      <div class="chapter-title">From Vibe Coding to Agentic Engineering</div>
+      <div class="chapter-hook">In February 2025, Andrej Karpathy coined "vibe coding" — describe what you want, accept what comes back, forget the code exists. Exactly one year later, he declared it obsolete. The new default: you are not writing code 99% of the time. You are orchestrating agents who do, while acting as oversight. He called this <em>agentic engineering</em>. Then he joined Anthropic — not coincidentally. His reason: the model is the bottleneck on what an agent can do. His open-source <em>autoresearch</em> project now runs hundreds of AI experiments overnight. The vibe coding era taught founders they could build things they do not understand. The agentic engineering era delivers a harder lesson: you can now <em>ship</em> things you do not understand. The power shift is not just who owns the chips and the data centres — it is who owns the workflow. Vibe coders are users. Agentic engineers are the new infrastructure layer of human capital. Source: Forbes / Jodie Cook, June 12, 2026.</div>
+      <span class="chapter-status">New — June 14, 2026</span>
+    </div>
+
+    <div class="chapter-card chapter-card--new">
+      <div class="chapter-num">Chapter 15 — New · June 21, 2026</div>
+      <div class="chapter-title">The Invisible War: AI-Enabled Cyberwarfare</div>
+      <div class="chapter-hook">On April 7, 2026, Anthropic released Claude Mythos Preview — its most cyber-capable model — and immediately locked it behind Project Glasswing, a restricted access program for major technology firms only. The reason: Mythos can discover thousands of critical vulnerabilities across every major operating system and web browser, chain four exploits to escape a browser sandbox, and complete end-to-end autonomous attacks on enterprise networks. The UK AI Security Institute found AI cyber capabilities are doubling every four months. Chinese AI models are estimated to be seven months behind the US frontier — meaning adversaries could reach Mythos-level capability by late 2026. The time from vulnerability disclosure to active exploitation has collapsed to 20 hours. The central strategic asymmetry: attackers need only find one gap; defenders must close all of them. Compute is now the deciding variable in national cyber power. This is not a future risk. It is an ongoing transfer of offensive capability from nation-states with skilled hackers to any actor with enough compute and the right model. Who owns the most capable AI owns the most dangerous cyber weapon ever built — and is simultaneously the only one who can defend against it. Source: IAPS, April 2026.</div>
+      <span class="chapter-status">New — June 21, 2026</span>
     </div>
 
   </div>
@@ -1277,6 +1177,24 @@
         <li>Goldman Sachs: 300M jobs affected globally by generative AI</li>
         <li>McKinsey 2025: Today's AI could automate 57% of US work tasks</li>
         <li>OECD AI Employment Data &amp; World Bank Digital Economy Reports</li>
+      </ul>
+    </div>
+
+    <div class="source-cat" style="border-left:3px solid #e05252;padding-left:0.75rem;">
+      <div class="source-cat-title" style="color:#e05252;">AI Cyberwarfare &amp; National Security</div>
+      <ul class="source-list">
+        <li><a href="https://www.iaps.ai/research/mythos-and-the-evolving-cyber-landscape-implications-and-policy-priorities-Bu4xs" target="_blank" style="color:var(--teal);">IAPS: Mythos and the Evolving Cyber Landscape</a> — April 16, 2026 <span class="verify">VERIFIED</span></li>
+        <li>Anthropic: Claude Mythos Preview release — April 7, 2026 (Project Glasswing restricted access)</li>
+        <li>UK AISI: Mythos completes 32-step enterprise network attack end-to-end (first model to do so)</li>
+        <li>UK AISI: Mythos averages 22/32 steps vs Opus 4.6's 16/32; compute scaling improves performance 59%</li>
+        <li>UK Government: AI cyber capabilities doubling every 4 months (down from 8 months)</li>
+        <li>Epoch AI: Chinese AI models ~7 months behind US frontier — Mythos-level capability estimated Nov 2026</li>
+        <li>ZeroDayClock: Exploitation timeline collapsed from 2.3 years (2018) → 23 days (2025) → 20 hours (Apr 2026)</li>
+        <li>Anthropic: Opus 4.6 found 500+ open-source vulnerabilities (Feb 2026); Mythos found thousands incl. all major OS &amp; browsers</li>
+        <li>Anthropic: Chinese state actor used Claude to automate 80–90% of an offensive cyber operation (2025)</li>
+        <li>IAPS: Only 15% of OT/critical infrastructure organisations patch monthly — 48% cite limited personnel</li>
+        <li>Anthropic: $100M usage credits committed via Project Glasswing; $4M to open-source security orgs</li>
+        <li>Single attacker used AI to compromise 9 Mexican government agencies, exfiltrate hundreds of millions of records (early 2026)</li>
       </ul>
     </div>
 
@@ -1559,8 +1477,14 @@
 <section style="background:var(--surface2);border-top:1px solid var(--border);padding:3rem 0;">
 <div class="container">
   <div class="eyebrow">Research Intelligence — Last Updated</div>
-  <h2 style="font-size:1.3rem;margin-bottom:1.5rem;">Live Source Log — June 12, 2026</h2>
+  <h2 style="font-size:1.3rem;margin-bottom:1.5rem;">Live Source Log — June 21, 2026</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.75rem;">
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid #e05252;border-left:3px solid #e05252;border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:#e05252;">🆕 AI Cyberwarfare: Claude Mythos (IAPS, Apr 2026)</strong> — Mythos is Anthropic's most cyber-capable model: found thousands of critical vulnerabilities incl. all major OS &amp; browsers; completed end-to-end 32-step enterprise network attack autonomously (first model ever). Restricted to Project Glasswing partners only. UK AISI: AI cyber capabilities doubling every 4 months. Exploitation timelines: 2.3 years (2018) → 20 hours (Apr 2026). Chinese models estimated at Mythos-level by Nov 2026. Compute is now national cyber power. Source: IAPS / Anthropic / UK AISI, April 2026.
+    </div>
+    <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--gold);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
+      <strong style="color:var(--gold);">🆕 Agentic Engineering (Karpathy, Forbes Jun 2026)</strong> — Karpathy declares vibe coding obsolete; coins "agentic engineering." Joins Anthropic: model quality is the agent bottleneck. Launches open-source <em>autoresearch</em>. Key quote: "You can ship things you do not understand." Source: Forbes / Jodie Cook, June 12, 2026.
+    </div>
     <div style="padding:0.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-family:system-ui;font-size:0.78rem;color:var(--text-dim);">
       <strong style="color:var(--gold);">Hyperscaler Capex</strong> — Big Four spend $725B in 2026, up 77% YoY. Amazon $200B, Google $175–190B, Microsoft $190B, Meta $115–135B. Source: FT Q1 2026 earnings compilation; Tom's Hardware Apr 2026.
     </div>
@@ -1589,220 +1513,12 @@
 </div>
 </section>
 
-
-
-<section id="spacex-ipo" style="background:var(--bg);border-bottom:1px solid var(--border);">
-<div class="container">
-  <div class="eyebrow" style="color:#e05252;">🔴 BREAKING — June 12–13, 2026</div>
-  <h2 style="font-size:1.5rem;margin-bottom:0.5rem;">SpaceX IPO: The Largest Stock Debut in History</h2>
-  <p style="font-family:system-ui;font-size:0.85rem;color:var(--text-dim);margin-bottom:1.5rem;">This is the defining proof of the book's central thesis — retail investors arrived after private capital already captured a decade of gains.</p>
-
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
-    <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid #e05252;padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:#e05252;">$135</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">IPO price — valuing SpaceX at $1.77 trillion at listing. Nasdaq ticker: SPCX. <em>(Jun 12, 2026)</em></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid #e05252;padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:#e05252;">$160.95</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">First day close — up 19% from IPO price. Session high $168.75 (+25%). Market cap hit $2.21T at peak. <em>(NPR/CNBC)</em></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--gold);">$2T+</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Market cap on first day — one of the world's largest listed companies immediately. Within striking distance of Amazon's $2.54T. <em>(CNBC)</em></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--gold);">$33B</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Dollar volume on day one — more than QQQ ($22B) and SPY ($18B) combined. 207M+ shares traded. <em>(CNBC live)</em></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--teal);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--teal);">3x</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Larger than the previous largest IPO ever — Saudi Aramco's $29B raise in 2019. SpaceX is in a category of its own. <em>(NBC News)</em></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--teal);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--teal);">-$4.3B</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Net loss Q1 2026 — SpaceX is not profitable. Morningstar values it at $780B. Public markets paid $1.77T. <em>(NPR)</em></div>
-    </div>
-  </div>
-
-  <div class="pull-quote" style="margin:1.5rem 0;">
-    "For years, SpaceX was largely accessible only to venture capital firms, institutional investors and a small group of private shareholders. Now, ordinary investors will have their first chance to buy into one of the most closely watched companies in the world." — NBC News, June 12, 2026. This is Chapter 7 of the book made real.
-  </div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
-    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid #e05252;padding:1.25rem;border-radius:0 4px 4px 0;">
-      <div style="font-family:system-ui;font-size:0.8rem;font-weight:700;color:#e05252;margin-bottom:0.5rem;">THE RETAIL INVESTOR TRAP</div>
-      <div style="font-family:system-ui;font-size:0.8rem;color:var(--text-dim);line-height:1.6;">SpaceX was last valued at $800B in a private secondary sale. Public investors bought at $1.77T — 2.2x that price. Morningstar's DCF model values it at $780B. Retail paid a 127% premium over fundamental value on Day 1. Private capital won. Public markets absorbed the risk.</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);padding:1.25rem;border-radius:0 4px 4px 0;">
-      <div style="font-family:system-ui;font-size:0.8rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem;">THE AI ANGLE — ORBITAL AI COMPUTE</div>
-      <div style="font-family:system-ui;font-size:0.8rem;color:var(--text-dim);line-height:1.6;">SpaceX acquired xAI earlier this year and has plans to expand data centres on Earth, develop AI microchips, and launch "orbital AI compute infrastructure." SpaceX is not just a rocket company — it is positioning itself as an AI infrastructure player. Altimeter's Brad Gerstner called SpaceX "as capable as anybody on the planet" at building AI data centres.</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--teal);padding:1.25rem;border-radius:0 4px 4px 0;">
-      <div style="font-family:system-ui;font-size:0.8rem;font-weight:700;color:var(--teal);margin-bottom:0.5rem;">COLLATERAL DAMAGE</div>
-      <div style="font-family:system-ui;font-size:0.8rem;color:var(--text-dim);line-height:1.6;">SpaceX's listing crushed competitors on Day 1: Firefly Aerospace -18%, Rocket Lab -10%, Virgin Galactic -34%, Planet Labs -10%, AST SpaceMobile -10%+. Capital flows to the dominant platform. Everyone else pays the price. This pattern will repeat when Anthropic and OpenAI list.</div>
-    </div>
-  </div>
-
-  <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;">
-    <div style="font-family:system-ui;font-size:0.8rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem;">WHAT THIS MEANS FOR THE BOOK</div>
-    <div style="font-family:system-ui;font-size:0.8rem;color:var(--text-dim);line-height:1.6;">SpaceX's IPO is the single most powerful case study for Chapters 7 and 8 — "When Retail Arrives Late" and "The Private Capital Capture." The company raised money for a decade at private valuations. Insiders including Sequoia, Google, Fidelity, and sovereign wealth funds captured the growth from $100M to $1.77T. Public investors got access at the top. This is not unique to SpaceX. It is the playbook. Anthropic and OpenAI are next. The AI Power Shift thesis is confirmed in real time.</div>
-  </div>
-
-  <div style="margin-top:1rem;font-family:system-ui;font-size:0.72rem;color:var(--text-muted);">
-    Sources: NPR (Jun 12, 2026) · CNBC Live Updates (Jun 12, 2026) · NBC News (Jun 12, 2026) · Reuters · Bloomberg · Morningstar DCF Analysis
-  </div>
-</div>
-</section>
-
-<section id="week25" style="background:var(--surface2);border-bottom:1px solid var(--border);">
-<div class="container">
-  <div class="eyebrow">Week 2.5 Intelligence Update — June 13, 2026</div>
-  <h2 style="font-size:1.5rem;margin-bottom:1rem;">Nvidia Blackwell: The Toll Road Numbers Are In</h2>
-  <p class="section-intro">Fresh from SEC filings and Q1 FY2027 earnings — the hidden toll road thesis is now confirmed in numbers that are almost impossible to comprehend.</p>
-
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;">
-    <div style="background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--gold);">$81.6B</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Nvidia Q1 FY2027 revenue — 85% YoY growth. Beat Wall Street by $2.8B. <em>(May 20, 2026)</em></div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--gold);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--gold);">$215.9B</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Nvidia full-year FY2026 revenue — up 65% YoY. Data Centre alone: $190B. <em>(SEC 8-K, Feb 2026)</em></div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--teal);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--teal);">75%</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Nvidia gross margin Q4 FY2026 — extraordinary pricing power on Blackwell GPUs. <em>(Nvidia Newsroom)</em></div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--teal);padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:var(--teal);">13x</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Growth in Nvidia Data Centre revenue since ChatGPT launched. One product category. Three years. <em>(XTB Analysis)</em></div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-top:3px solid #e05252;padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:#e05252;">$78B</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Nvidia Q2 FY2027 guidance — implies 77% YoY growth. Exceeded consensus by $5B+. <em>(Nvidia, May 2026)</em></div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-top:3px solid #e05252;padding:1.25rem;border-radius:0 0 6px 6px;">
-      <div style="font-family:system-ui;font-size:1.8rem;font-weight:800;color:#e05252;">1 GW</div>
-      <div style="font-family:system-ui;font-size:0.75rem;color:var(--text-dim);line-height:1.5;margin-top:4px;">Anthropic committed to 1 gigawatt of Nvidia Grace Blackwell compute capacity. Announced Q3 FY2026. <em>(Nvidia Newsroom)</em></div>
-    </div>
-  </div>
-
-  <div class="pull-quote" style="margin:1.5rem 0;">
-    Nvidia's Data Centre revenue has grown 13-fold since ChatGPT launched. Since the emergence of ChatGPT, Nvidia's data centre sales have increased 13x — confirming that every major AI model, including Claude, Gemini, GPT-4, and Grok, runs on Nvidia's toll road. The model companies compete. Jensen Huang collects.
-  </div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-    <div style="background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);padding:1.25rem;border-radius:0 4px 4px 0;">
-      <div style="font-family:system-ui;font-size:0.8rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem;">BLACKWELL ARCHITECTURE — THE NEXT TOLL GATE</div>
-      <div style="font-family:system-ui;font-size:0.8rem;color:var(--text-dim);line-height:1.6;">Blackwell (B200/GB200) delivers 5x AI inference performance of H100 per GPU, with 50x throughput per megawatt. Production pre-allocated through Q2 2026. Smaller AI companies face 6–12 month waits. Next generation: Vera Rubin — first samples shipped to customers this week. The toll road is already being upgraded before the current one is fully built.</div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--teal);padding:1.25rem;border-radius:0 4px 4px 0;">
-      <div style="font-family:system-ui;font-size:0.8rem;font-weight:700;color:var(--teal);margin-bottom:0.5rem;">THE CHINA WILDCARD</div>
-      <div style="font-family:system-ui;font-size:0.8rem;color:var(--text-dim);line-height:1.6;">Nvidia's Q2 FY2027 guidance explicitly assumes ZERO data centre revenue from China due to US export controls. A Feb 2026 licence allowed limited H200 volumes to specific customers but revenue remains zero. If China restrictions ease, Nvidia's $78B quarterly run rate could jump significantly — and if they tighten, the Vera Rubin ramp becomes even more critical to maintain growth momentum.</div>
-    </div>
-  </div>
-
-  <div style="margin-top:1rem;font-family:system-ui;font-size:0.72rem;color:var(--text-muted);">
-    Sources: Nvidia SEC 8-K Q4 FY2026 (Feb 25, 2026) · Nvidia Q1 FY2027 Earnings (May 20, 2026) · Nvidia Newsroom Q2 &amp; Q3 FY2026 · XTB Market Analysis · Intellectia AI · SingularityMoments · Phemex Academy
-  </div>
-</div>
-</section>
-
 <footer>
   <div class="container">
     <p><span>The AI Power Shift</span> — Research &amp; Book Intelligence Platform</p>
-    <p style="margin-top:0.5rem;">Prof Dr Teik Kheong Tan · Stanford University · Version 2.0 · June 12, 2026 · Research verified from live sources — verify before publication</p>
+    <p style="margin-top:0.5rem;">Prof Dr Teik Kheong Tan · Stanford University · Version 2.2 · June 21, 2026 · Research verified from live sources — verify before publication</p>
   </div>
 </footer>
 
-
-
-<!-- WHATS NEW FLOATING -->
-<button id="wnBtn" onclick="toggleWN()">⚡ What's New</button>
-<div id="wnPanel">
-  <div class="wn-head">⚡ What's New — June 13, 2026</div>
-  <div class="wn-item"><a href="#spacex-ipo" onclick="closeWN()"><span class="wn-badge brk">Breaking</span>SpaceX IPO — $2T market cap, 19% Day 1 gain. Retail investor trap confirmed.</a></div>
-  <div class="wn-item"><a href="#week25" onclick="closeWN()"><span class="wn-badge new">New</span>Nvidia Blackwell — $81.6B Q1 FY2027 revenue, 85% YoY. Vera Rubin shipping now.</a></div>
-  <div class="wn-item"><a href="#hero" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Hero — $725B capex, 950 TWh energy, 40% job exposure stats live.</a></div>
-  <div class="wn-item"><a href="#tollroads" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Hidden Toll Roads — Nvidia 13x data centre growth since ChatGPT.</a></div>
-  <div class="wn-item"><a href="#investor" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Retail Investor Lens — Anthropic $965B S-1 + SpaceX IPO case study.</a></div>
-  <div class="wn-item"><a href="#sources" onclick="closeWN()"><span class="wn-badge upd">Updated</span>Sources — Live links to IEA, NIST, SEC filings, CNBC added.</a></div>
-</div>
-
-<!-- SEARCH OVERLAY -->
-<div id="searchOverlay">
-  <button id="searchClose" onclick="closeSearch()">✕</button>
-  <input id="searchBox" type="search" placeholder="Search... e.g. Nvidia, SpaceX, Malaysia, quantum" autocomplete="off" autocorrect="off" spellcheck="false">
-  <div id="searchResults"></div>
-</div>
-
-<script>
-(function(){
-  // --- SEARCH ---
-  function openSearch(){
-    var o=document.getElementById('searchOverlay');
-    o.classList.add('active');
-    setTimeout(function(){ document.getElementById('searchBox').focus(); },150);
-  }
-  function closeSearch(){
-    document.getElementById('searchOverlay').classList.remove('active');
-    document.getElementById('searchBox').value='';
-    document.getElementById('searchResults').innerHTML='';
-  }
-  window.closeSearch=closeSearch;
-
-  document.getElementById('navSearchBtn').addEventListener('click', openSearch);
-  document.getElementById('searchBox').addEventListener('input', function(){ doSearch(this.value); });
-  document.addEventListener('keydown', function(e){
-    if(e.key==='Escape'){ closeSearch(); closeWN(); }
-    if(e.key==='/' && document.activeElement.tagName!=='INPUT'){ e.preventDefault(); openSearch(); }
-  });
-
-  function doSearch(q){
-    var res=document.getElementById('searchResults');
-    q=q.trim();
-    if(q.length<2){ res.innerHTML=''; return; }
-    var nodes=document.querySelectorAll('section, .stack-card, .toll-item, .chapter-card, .region-card, .quantum-pillar, .source-cat');
-    var hits=[];
-    var ql=q.toLowerCase();
-    nodes.forEach(function(n){
-      var txt=n.innerText||n.textContent||'';
-      var tl=txt.toLowerCase();
-      var idx=tl.indexOf(ql);
-      if(idx===-1) return;
-      var h=n.querySelector('h2,h3,.stack-title,.toll-name,.chapter-title,.region-name,.quantum-title,.eyebrow,.source-cat-title');
-      var title=h?h.innerText.trim():'Section';
-      var s=Math.max(0,idx-50), e2=Math.min(txt.length,idx+q.length+120);
-      var snip=txt.substring(s,e2).replace(/\s+/g,' ').trim();
-      var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
-      snip=snip.replace(re,'<em>$1</em>');
-      var anchor=n.id?'#'+n.id:'';
-      hits.push({title:title,snip:snip,anchor:anchor});
-    });
-    if(hits.length===0){
-      res.innerHTML='<div id="searchNoResult">No results for &ldquo;'+q+'&rdquo;</div>';
-      return;
-    }
-    res.innerHTML=hits.slice(0,8).map(function(h){
-      return '<a class="sr-item" href="'+h.anchor+'" onclick="closeSearch()"><div class="sr-title">'+h.title+'</div><div class="sr-snip">'+h.snip+'</div></a>';
-    }).join('');
-  }
-
-  // --- WHATS NEW ---
-  window.toggleWN=function(){
-    document.getElementById('wnPanel').classList.toggle('open');
-  };
-  window.closeWN=function(){
-    document.getElementById('wnPanel').classList.remove('open');
-  };
-  document.addEventListener('click',function(e){
-    var panel=document.getElementById('wnPanel');
-    var btn=document.getElementById('wnBtn');
-    if(panel && btn && !panel.contains(e.target) && !btn.contains(e.target)){
-      panel.classList.remove('open');
-    }
-  });
-})();
-</script>
 </body>
 </html>
