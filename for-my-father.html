@@ -334,8 +334,14 @@
 
     const text = getTextForBlock(el);
     utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = currentLang === 'zh' ? 'zh-CN' : 'en-US';
-    utterance.rate = currentLang === 'zh' ? 0.92 : 0.95;
+    utterance.lang = currentLang === 'zh' ? 'zh-CN' : 'en-GB';
+    utterance.rate = currentLang === 'zh' ? 0.92 : 0.78;
+    if (currentLang === 'en') {
+      const ukFemale = speechSynthesis.getVoices().find(v =>
+        /en-GB/i.test(v.lang) && /female|kate|serena|hazel|fiona|moira|tessa|google uk english female/i.test(v.name)
+      ) || speechSynthesis.getVoices().find(v => /en-GB/i.test(v.lang));
+      if (ukFemale) utterance.voice = ukFemale;
+    }
 
     utterance.onend = () => {
       el.classList.remove('reading');
