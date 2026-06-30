@@ -335,12 +335,18 @@
     const text = getTextForBlock(el);
     utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = currentLang === 'zh' ? 'zh-CN' : 'en-GB';
-    utterance.rate = currentLang === 'zh' ? 0.92 : 0.78;
+    utterance.rate = currentLang === 'zh' ? 0.92 : 0.72;
+    utterance.pitch = currentLang === 'en' ? 1.05 : 1.0;
     if (currentLang === 'en') {
-      const ukFemale = speechSynthesis.getVoices().find(v =>
-        /en-GB/i.test(v.lang) && /female|kate|serena|hazel|fiona|moira|tessa|google uk english female/i.test(v.name)
-      ) || speechSynthesis.getVoices().find(v => /en-GB/i.test(v.lang));
-      if (ukFemale) utterance.voice = ukFemale;
+      const allVoices = speechSynthesis.getVoices();
+      // Android/Samsung Google TTS names things like "Google UK English Female" or just lists by locale
+      let ukVoice = allVoices.find(v => /en-GB/i.test(v.lang) && /female/i.test(v.name));
+      if (!ukVoice) ukVoice = allVoices.find(v => /en-GB/i.test(v.lang));
+      if (!ukVoice) ukVoice = allVoices.find(v => /female/i.test(v.name) && /en/i.test(v.lang));
+      if (ukVoice) {
+        utterance.voice = ukVoice;
+        utterance.lang = ukVoice.lang;
+      }
     }
 
     utterance.onend = () => {
