@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Power Shift — Full Book</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=EB+Garamond:ital,wght@0,400;1,400&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: #f8f5f0;
+    font-family: 'EB Garamond', Georgia, serif;
+    color: #1a1a1a;
+    font-size: 18px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── STICKY AUDIO BAR ── */
+  .audio-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #0a0e1a;
+    border-bottom: 2px solid #c9a84c;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 200;
+    flex-wrap: wrap;
+  }
+
+  .book-title-bar {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: #c9a84c;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .audio-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    border: 1.5px solid rgba(201,168,76,0.7);
+    color: #c9a84c;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .audio-btn:active, .audio-btn.playing { background: rgba(201,168,76,0.35); }
+
+  .lang-toggle {
+    display: flex;
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+  .lang-btn {
+    font-family: 'EB Garamond', serif;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 16px;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+  .lang-btn.active { background: rgba(201,168,76,0.25); color: #c9a84c; }
+
+  .speed-btn {
+    font-family: 'EB Garamond', serif;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .speed-btn:active { background: rgba(201,168,76,0.2); }
+
+  .audio-status {
+    font-family: 'EB Garamond', serif;
+    font-size: 10px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.05em;
+    flex: 2;
+    text-align: right;
+    min-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── TOC SIDEBAR ── */
+  .toc {
+    position: fixed;
+    top: 62px; left: 0;
+    width: 240px;
+    height: calc(100vh - 62px);
+    overflow-y: auto;
+    background: #0a0e1a;
+    border-right: 1px solid rgba(201,168,76,0.2);
+    padding: 20px 16px;
+    z-index: 100;
+  }
+
+  .toc h3 {
+    font-family: 'EB Garamond', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.6);
+    margin-bottom: 16px;
+  }
+
+  .toc a {
+    display: block;
+    font-family: 'EB Garamond', serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    line-height: 1.4;
+    transition: all 0.15s;
+  }
+  .toc a:hover { color: #c9a84c; background: rgba(201,168,76,0.08); }
+  .toc a.active { color: #c9a84c; background: rgba(201,168,76,0.12); }
+  .toc a.part-link {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(201,168,76,0.5);
+    text-transform: uppercase;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    padding-left: 0;
+  }
+  .toc a.indent { padding-left: 16px; }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    margin-left: 240px;
+    margin-top: 62px;
+    max-width: 760px;
+    padding: 60px 60px 120px;
+  }
+
+  @media (max-width: 700px) {
+    .toc { display: none; }
+    .content { margin-left: 0; padding: 40px 24px 120px; }
+  }
+
+  /* ── SECTION STYLES ── */
+  .section {
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding-bottom: 60px;
+    margin-bottom: 60px;
+  }
+
+  .section-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.35);
+    color: #b8922a;
+    font-family: 'EB Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 28px;
+  }
+  .section-play-btn:hover { background: rgba(201,168,76,0.18); }
+  .section-play-btn.playing { background: rgba(201,168,76,0.25); color: #c9a84c; }
+
+  .eyebrow {
+    font-family: 'EB Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #b8922a;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: #0a0e1a;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0a0e1a;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .ch-num {
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: #c9a84c;
+    margin: 20px 0;
+  }
+
+  p {
+    margin-bottom: 18px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .pull-quote {
+    border-left: 3px solid #c9a84c;
+    margin: 32px 0;
+    padding: 16px 24px;
+    font-style: italic;
+    font-size: 19px;
+    color: #4a4a4a;
+    line-height: 1.7;
+    background: rgba(201,168,76,0.04);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .sec-head {
+    font-family: 'EB Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #b8922a;
+    margin: 36px 0 12px;
+    font-weight: bold;
+  }
+
+  .stat-block {
+    border-left: 2px solid #c9a84c;
+    padding: 6px 0 6px 16px;
+    margin: 8px 0 16px;
+  }
+  .stat-fig {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #c9a84c;
+    line-height: 1.2;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+  }
+
+  .zh { font-family: 'Noto Serif SC', serif; }
+  .zh-big { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 700; color: #c9a84c; margin-bottom: 8px; }
+  .zh-sub { font-family: 'Noto Serif SC', serif; font-size: 14px; color: #888; margin-bottom: 20px; }
+
+  .part-page {
+    background: #0a0e1a;
+    color: #f0e6d8;
+    padding: 60px 0;
+    margin: 40px -60px;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  .part-page .part-label {
+    font-family: 'EB Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: rgba(201,168,76,0.6);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .part-page h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: #c9a84c;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .part-page p {
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    margin: 0;
+  }
+
+  .reading-highlight {
+    background: rgba(201,168,76,0.15);
+    border-radius: 3px;
+    transition: background 0.3s;
+  }
+
+  .toc-toggle {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 16px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: #0a0e1a;
+    border: 1.5px solid #c9a84c;
+    color: #c9a84c;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 150;
+  }
+
+  @media (max-width: 700px) {
+    .toc-toggle { display: flex; }
+    .content { padding: 32px 20px 120px; }
+    h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- AUDIO BAR -->
+<div class="audio-bar">
+  <div class="book-title-bar">THE AI POWER SHIFT</div>
+  <button class="audio-btn" id="playBtn" onclick="toggleFull()" title="Read Full Book">▶</button>
+  <button class="audio-btn" id="pauseBtn" onclick="pauseResume()" title="Pause / Resume" style="display:none;">❙❙</button>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="enBtn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="zhBtn" onclick="setLang('zh')">中文</button>
+  </div>
+  <button class="speed-btn" onclick="cycleSpeed()" id="speedBtn">1.0×</button>
+  <div class="audio-status" id="status">Read Aloud — Full Book or by Section</div>
+</div>
+
+<!-- TOC SIDEBAR -->
+<nav class="toc">
+  <h3>Contents</h3>
+  <a href="#dedication">Dedication · 题献</a>
+  <a href="#introduction" class="indent">Introduction</a>
+  <a href="#part1" class="part-link">Part I — Infrastructure</a>
+  <a href="#ch1" class="indent">Ch 1 · Apple Borrowed a Brain</a>
+  <a href="#ch2" class="indent">Ch 2 · The New AI Empire</a>
+  <a href="#ch3" class="indent">Ch 3 · Models Are Not Enough</a>
+  <a href="#ch4" class="indent">Ch 4 · The Hidden Toll Roads</a>
+  <a href="#part2" class="part-link">Part II — Sovereignty</a>
+  <a href="#ch5" class="indent">Ch 5 · The Kill Switch</a>
+  <a href="#part3" class="part-link">Part III — Human Reckoning</a>
+  <a href="#ch6" class="indent">Ch 6 · The Labour Bargain Breaks</a>
+  <a href="#ch7" class="indent">Ch 7 · Who Gets Left Behind</a>
+  <a href="#conclusion" class="indent">Conclusion</a>
+  <a href="#about">About the Author</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+<!-- DEDICATION -->
+<div class="section" id="dedication" data-section="dedication">
+  <button class="section-play-btn" onclick="playSection('dedication')">▶ Play Section</button>
+  <div class="eyebrow">Dedication · 题献</div>
+  <div class="divider"></div>
+  <p class="read-en" data-zh="为我的父亲，" id="d1"><em>For my father,</em></p>
+  <p class="read-en" data-zh="他生于油灯与牛车的年代，" id="d2"><em>who was born into a world of oil lamps and bullock carts,</em></p>
+  <p class="read-en" data-zh="却亲眼见证了会思考的机器降临人间。" id="d3"><em>and has lived to see machines that think.</em></p>
+  <p class="read-en" data-zh="他无需理解这项技术，却深知何为最重要：权力从不停歇——智者在权贵察觉之前，已知晓它的去向。" id="d4"><em>He did not need to understand the technology to understand what mattered most: that power always moves — and the wise know where it is going before the powerful notice it has left.</em></p>
+  <p class="read-en" data-zh="九十四载岁月，他历经帝国兴衰、货币更迭、意识形态沉浮，如今或许连「唯有人类能思考」这一观念也将成为过去。" id="d5"><em>At ninety-four, he has outlasted empires, currencies, ideologies, and now perhaps the very idea that only humans can think. This book is my attempt to make sense of what comes next — written in his honour, and in his spirit.</em></p>
+  <br>
+  <p class="zh read-zh" data-en="Dedicated to my beloved father." id="d6"><strong style="color:#c9a84c;">献给亲爱的父亲大人</strong></p>
+  <p class="zh read-zh" data-en="He was born in a world of oil lamps and bullock carts, and lived to see machines that think." id="d7">他生于油灯与牛车的年代，却亲眼见证了会思考的机器降临人间。</p>
+  <p class="zh read-zh" data-en="Power never rests. The wise know where it is going before the powerful notice it has left." id="d8">权力从不停歇——智者在权贵察觉之前，已知晓它的去向。</p>
+  <br>
+  <p style="text-align:right;font-style:italic;color:#888;">— 陳德強教授博士 · Prof Dr Tan Teik Kheong<br>IEEE · 2026</p>
+</div>
+
+<!-- INTRODUCTION -->
+<div class="section" id="introduction" data-section="introduction">
+  <button class="section-play-btn" onclick="playSection('introduction')">▶ Play Section</button>
+  <div class="eyebrow">Introduction</div>
+  <h1 class="read-en" data-zh="为什么权力比技术更重要" id="i_title">Why Power, Not Technology</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="i1">Every era has a technology that rewires the global economy. Steam rewired manufacturing. Electricity rewired cities. The internet rewired commerce and communication. Artificial intelligence is rewiring everything simultaneously — and doing it faster than any previous technology transition in recorded history.</p>
+  <p class="read-en" id="i2">But this book is not primarily about the technology. It is about the power. Specifically, about how economic and strategic power is transferring — systematically, structurally, and largely invisibly — across the entire AI ecosystem. From apps to infrastructure. From software to compute. From consumer brands to hidden infrastructure owners. From public markets to private capital.</p>
+  <div class="pull-quote read-en" id="i3">AI is not just a technology story. It is a power-transfer story. The question is not whether AI will change the world. The question is who will own the world it changes — and on what terms.</div>
+  <div class="sec-head">The Seven Questions</div>
+  <p class="read-en" id="i4">Throughout this book, seven questions recur. They are the analytical framework that cuts through the noise: Who owns the layer? Who pays whom? Where does the money flow? What is the bottleneck? What is the hidden dependency? What happens to retail investors? And what changes globally — and for whom?</p>
+  <p class="read-en" id="i5">Ask these questions consistently, about every AI announcement you encounter, and the power shift comes into sharp, uncomfortable focus. The answers are rarely the ones that the press releases suggest.</p>
+</div>
+
+<!-- PART I -->
+<div class="part-page" id="part1">
+  <div class="part-label">Part I</div>
+  <h2>The Infrastructure Nobody Sees</h2>
+  <p>Compute · Energy · Chips · The Hidden Toll Roads</p>
+</div>
+
+<!-- CHAPTER 1 -->
+<div class="section" id="ch1" data-section="ch1">
+  <button class="section-play-btn" onclick="playSection('ch1')">▶ Play Section</button>
+  <div class="eyebrow">Part I — The Infrastructure Nobody Sees</div>
+  <div class="ch-num">Chapter 1</div>
+  <h1 class="read-en" id="c1_title">The Day Apple Borrowed a Brain</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="c1_p1">In June 2024, Apple stood on stage at its annual Worldwide Developers Conference and announced a partnership with OpenAI to bring artificial intelligence to its products. The crowd applauded. The headlines celebrated. Nobody asked the obvious question: why couldn't Apple build this itself?</p>
+  <p class="read-en" id="c1_p2">Apple's market capitalisation hovered around three trillion dollars. It had its own custom silicon — the M-series chips that had outpaced Intel's roadmap by years. It had cash reserves exceeding the GDP of most countries. And yet, when it came to the most important new capability in consumer technology, it had to go to a startup founded in 2015 and ask to borrow its brain.</p>
+  <div class="pull-quote read-en" id="c1_pq1">The world's most valuable device company had to licence intelligence from a competitor. That single moment told you everything about where power had moved — and where it had not.</div>
+  <div class="sec-head">The Misdirection</div>
+  <p class="read-en" id="c1_p3">The public conversation about artificial intelligence is almost entirely focused on the wrong things. We talk about chatbots. We talk about whether AI will write our emails, replace our doctors, or take our jobs. Meanwhile, the actual power shift is happening somewhere most people never look — in data centres the size of football stadiums, in semiconductor fabs in Taiwan that are the single most strategically important buildings on earth, and in private capital markets where sovereign wealth funds are writing cheques that make venture capital rounds look like rounding errors.</p>
+  <div class="pull-quote read-en" id="c1_pq2">The public sees chatbots and apps. The deeper story is the systematic transfer of economic power across the entire AI ecosystem — from apps to infrastructure, from software to compute, from consumer brands to the hidden owners of the stack beneath.</div>
+  <div class="sec-head">Why Apple Had to Borrow</div>
+  <p class="read-en" id="c1_p4">Apple had the money. It had the engineering talent. It had the distribution. What it did not have was the accumulated expertise in transformer architectures, the proprietary training data at the required scale, and the institutional knowledge of how to manage the catastrophically expensive process of training and iterating on frontier models. These things take years to build, not quarters.</p>
+  <p class="read-en" id="c1_p5">The deal Apple struck with OpenAI is a microcosm of the broader AI power structure. A consumer-facing brand with enormous distribution, dependent on an infrastructure-layer company for the intelligence that makes its products work. The brand takes the credit. The infrastructure takes the rent.</p>
+  <div class="sec-head">The Intelligence Stack</div>
+  <p class="read-en" id="c1_p6">To understand the full implications, think of intelligence as a stack with five layers: raw compute at the base, training infrastructure above it, then training data, then the model itself, then deployment infrastructure at the top. Apple could not build layers one through four quickly enough to matter. So it licensed the output of those layers from the company that had built them, and added its own contribution at layer five.</p>
+  <p class="read-en" id="c1_p7">Every organisation that has made a similar choice — which is to say, most organisations that have adopted AI capabilities in any serious way — has created a similar dependency. And the sum of those individual dependencies is the infrastructure of the AI power shift: the concentrated ownership of the intelligence stack in a small number of organisations that now have leverage over an enormous proportion of the world's AI-dependent workflows.</p>
+  <div class="sec-head">The Sovereign Debt of Technology</div>
+  <p class="read-en" id="c1_p8">There is a concept in finance called sovereign debt — the obligations a nation owes to external creditors that constrain its policy choices in a crisis. The AI era is creating a form of sovereign technological debt that operates by similar logic. Nations that have built their critical digital infrastructure on platforms and services they do not own have created obligations to external providers that constrain their policy choices in ways they may not fully recognise until a crisis forces the constraint into view.</p>
+  <p class="read-en" id="c1_p9">The June 2026 kill switch was that crisis for much of the developed world. The lesson was available earlier — in the Huawei entity list episode of 2019, when every telecommunications operator that had built networks on Huawei equipment had to reconsider its infrastructure. The world chose not to learn it then. The 2026 episode was considerably harder to ignore.</p>
+  <div class="sec-head">The Seven Questions</div>
+  <p class="read-en" id="c1_p10">This book is organised around seven questions: Who owns the layer? Who pays whom? Where does the money flow? What is the bottleneck? What is the hidden dependency? What happens to retail investors? And what changes globally — and for whom? The answers are surprisingly concentrated, and they point consistently toward the infrastructure layer as the location of durable power in the AI era.</p>
+</div>
+
+<!-- CHAPTER 2 -->
+<div class="section" id="ch2" data-section="ch2">
+  <button class="section-play-btn" onclick="playSection('ch2')">▶ Play Section</button>
+  <div class="eyebrow">Part I — The Infrastructure Nobody Sees</div>
+  <div class="ch-num">Chapter 2</div>
+  <h1 class="read-en" id="c2_title">The New AI Empire</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="c2_p1">There is a question nobody asks at AI conferences. Speakers present stunning benchmarks. Investors explain why this cycle is different. And nobody asks: who actually owns this? The new AI empire is not owned by the companies whose logos appear on the products. It is owned by a smaller, quieter group who positioned themselves in the infrastructure layer before the consumer race began.</p>
+  <div class="pull-quote read-en" id="c2_pq1">Follow the capital, not the headlines. The companies making the most noise in AI are often the ones paying the most rent to the companies nobody has heard of.</div>
+  <div class="sec-head">The Stack Nobody Talks About</div>
+  <p class="read-en" id="c2_p2">At the base of the stack sits NVIDIA — a company whose position has no historical precedent. In 2025 it generated $130 billion in revenue, up from $27 billion two years prior, at gross margins exceeding 57 percent. Every major AI lab trains on NVIDIA hardware. The company is the landlord of the AI economy, collecting rent from every competitor in the model race.</p>
+  <div class="stat-block"><div class="stat-fig">$725 billion</div><div class="stat-label">Big Four hyperscaler capital expenditure, 2026 — up 77% year-on-year</div></div>
+  <div class="stat-block"><div class="stat-fig">90%</div><div class="stat-label">Global AI compute controlled by US and China combined</div></div>
+  <div class="stat-block"><div class="stat-fig">$965 billion</div><div class="stat-label">Anthropic private valuation at S-1 filing, June 2026</div></div>
+  <div class="stat-block"><div class="stat-fig">235×</div><div class="stat-label">Anthropic valuation increase from early 2023 to 2026 IPO filing</div></div>
+  <p class="read-en" id="c2_p3">Microsoft's $13 billion investment in OpenAI, structured as Azure compute credits, was a masterstroke of infrastructure lock-in. Amazon's commitment of up to $20 billion in Anthropic followed identical logic. These are not charitable investments. They are long-term lease agreements: the model company gets capital, the hyperscaler gets a guaranteed, high-volume tenant paying cloud fees for years.</p>
+  <div class="pull-quote read-en" id="c2_pq2">The AI empire has a flag. It is American. Everything else is either a province, a supplier, or a competitor being contained — and the containment architecture is both economic and legal.</div>
+  <div class="sec-head">China's Counter-Architecture</div>
+  <p class="read-en" id="c2_p4">China's AI situation in 2026 is a strategic paradox: the world's largest population of AI users, constrained by export controls that deny access to the most advanced hardware. But the export controls produced unintended consequences. DeepSeek's R1 model demonstrated that frontier-level reasoning capability could be achieved with restricted hardware using novel efficiency techniques — innovation under constraint that embarrassed the assumption that hardware access was the binding constraint on AI capability.</p>
+  <p class="read-en" id="c2_p5">The strategic implication for the rest of the world: the binary choice between American and Chinese AI dependence is becoming a more nuanced landscape. Open source models from Chinese labs are available globally, not subject to American export controls, and can run on domestically owned infrastructure. The kill switch, designed to protect American strategic interests, inadvertently made the case for Chinese AI sovereignty to every government in the world.</p>
+  <div class="sec-head">The Private Capital Capture</div>
+  <p class="read-en" id="c2_p6">The investors who captured Anthropic's 235-fold valuation increase were not retail investors. They were Google, Amazon, and a small group of institutional players. By the time retail investors could buy shares on a public exchange, the extraordinary returns had already been made. The IPO is not the beginning of the opportunity. It is the closing of the first chapter.</p>
+</div>
+
+<!-- CHAPTER 3 -->
+<div class="section" id="ch3" data-section="ch3">
+  <button class="section-play-btn" onclick="playSection('ch3')">▶ Play Section</button>
+  <div class="eyebrow">Part I — The Infrastructure Nobody Sees</div>
+  <div class="ch-num">Chapter 3</div>
+  <h1 class="read-en" id="c3_title">Models Are Not Enough</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="c3_p1">There is a persistent fantasy in the AI industry: a brilliant team trains a model so capable that it disrupts everything. Intelligence wins. Infrastructure is just a detail. This fantasy has produced some of the most expensive failures in technology history.</p>
+  <div class="pull-quote read-en" id="c3_pq1">A model is a piece of software. Software does not run on dreams. It runs on chips, power, cooling, capital, and connectivity — none of which the leading model companies own at scale.</div>
+  <div class="sec-head">The Five Dependencies</div>
+  <p class="read-en" id="c3_p2">Every frontier AI model company faces five structural dependencies: compute, energy, data, capital, and talent. Training a frontier model costs between $50 million and $500 million. Data centres will consume 950 terawatt-hours by 2030 — equivalent to Japan's entire national electricity consumption. OpenAI lost an estimated $5 billion in 2024 on $3.7 billion in revenue. The researchers who can advance frontier models number in the hundreds globally.</p>
+  <div class="sec-head">The Talent Bottleneck</div>
+  <p class="read-en" id="c3_p3">Of all the dependencies, talent is the most structurally significant in the long run. The concentration of AI research talent is extraordinary — perhaps in the low thousands globally, concentrated in San Francisco, London, and a handful of academic centres. Senior researchers command total compensation of $1 million to $5 million per year. The most sought-after can negotiate equity positions worth tens or hundreds of millions.</p>
+  <p class="read-en" id="c3_p4">DeepSeek's demonstration that frontier-level results can be achieved despite hardware constraints proved that the talent dependency, not the compute dependency, may be the binding constraint. Innovation under constraint produced approaches the unconstrained American labs had not prioritised.</p>
+  <div class="sec-head">When Models Fail</div>
+  <p class="read-en" id="c3_p5">Understanding what models cannot do is as important as understanding what they can do. The most fundamental failure mode is hallucination — producing fluent, confident-sounding text that is factually incorrect. Hallucination is not a bug that can be fixed by making the model bigger. It is a consequence of the fundamental architecture, which predicts the next token without any intrinsic mechanism for verifying whether predictions correspond to facts.</p>
+  <p class="read-en" id="c3_p6">Context sensitivity, opacity, and knowledge currency compound the challenge. These failure modes are reasons to adopt AI with clear eyes, designing workflows that put model capabilities to work where failure modes are least consequential — not reasons to avoid AI adoption entirely.</p>
+  <div class="pull-quote read-en" id="c3_pq2">Models are the telephone. Infrastructure is the wire. The wire outlasts every telephone company that ever used it. In the AI era, the hyperscalers are the wire — and they have made sure that every model company runs through them.</div>
+</div>
+
+<!-- CHAPTER 4 -->
+<div class="section" id="ch4" data-section="ch4">
+  <button class="section-play-btn" onclick="playSection('ch4')">▶ Play Section</button>
+  <div class="eyebrow">Part I — The Infrastructure Nobody Sees</div>
+  <div class="ch-num">Chapter 4</div>
+  <h1 class="read-en" id="c4_title">The Hidden Toll Roads</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="c4_p1">In the California gold rush of 1849, most miners did not get rich. The people who got rich sold them shovels, jeans, food, and financing. The AI era is following the same pattern — except the toll roads are harder to see, the tolls are being collected at every layer of the stack simultaneously, and the scale of the extraction dwarfs anything the gold rush could have imagined.</p>
+  <div class="pull-quote read-en" id="c4_pq1">You do not need to know which AI model wins. You need to know which roads every model must travel — and then position yourself at the toll booth.</div>
+  <div class="sec-head">The Chip Toll Road</div>
+  <p class="read-en" id="c4_p2">NVIDIA supplies chips to OpenAI, Anthropic, Google, and every lab that can access its products. The harder the model companies compete, the more chips they buy. TSMC in Taiwan manufactures those chips — the single greatest structural vulnerability in the global AI economy. No TSMC, no advanced AI chips. No advanced AI chips, no frontier models.</p>
+  <div class="sec-head">The Energy Toll Road</div>
+  <div class="stat-block"><div class="stat-fig">950 TWh</div><div class="stat-label">Projected data centre electricity demand by 2030 — equivalent to Japan today</div></div>
+  <div class="stat-block"><div class="stat-fig">833%</div><div class="stat-label">Capacity auction price spike in Virginia data centre zone, 2025</div></div>
+  <p class="read-en" id="c4_p3">Microsoft signed a deal to restart the Three Mile Island nuclear plant to power its data centres. Amazon acquired a data centre campus co-located with a nuclear plant in Pennsylvania. Google signed long-term power purchase agreements with small modular reactor developers. The energy toll road is the least glamorous and potentially the most durable position in the entire AI investment landscape.</p>
+  <div class="sec-head">The Hidden Beneficiaries</div>
+  <p class="read-en" id="c4_p4">Electric utilities, nuclear operators, construction companies, data centre REITs, fibre connectivity providers — the AI build-out is touching every sector that provides the physical substrate on which digital infrastructure is built. The companies that own energy infrastructure in markets near major data centre clusters are seeing demand for power that exceeds their previous growth forecasts by multiples, not percentages.</p>
+  <p class="read-en" id="c4_p5">Data centre REITs that built facilities in Data Centre Alley in 2015 or 2020 are collecting rents from tenants who could not replicate the infrastructure at any price in 2026. The toll road has become, in the most literal sense, a moat. You do not need to pick a winning model. You need to own the land the winner's data centre sits on.</p>
+</div>
+
+<!-- PART II -->
+<div class="part-page" id="part2">
+  <div class="part-label">Part II</div>
+  <h2>The Sovereignty Crisis</h2>
+  <p>The Kill Switch · Export Controls · Who Controls Your AI?</p>
+</div>
+
+<!-- CHAPTER 5 -->
+<div class="section" id="ch5" data-section="ch5">
+  <button class="section-play-btn" onclick="playSection('ch5')">▶ Play Section</button>
+  <div class="eyebrow">Part II — The Sovereignty Crisis</div>
+  <div class="ch-num">Chapter 5</div>
+  <h1 class="read-en" id="c5_title">The Kill Switch: Who Controls Your AI?</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="c5_p1">On June 12, 2026, Commerce Secretary Howard Lutnick sent a letter to Anthropic CEO Dario Amodei ordering that Fable 5 and Mythos 5 be subject to export controls for all foreign nationals. Because American 'deemed export' rules treat access by a foreign national as equivalent to an export, the company had no choice but to disable both models for every user on earth.</p>
+  <p class="read-en" id="c5_p2">Every hospital that had integrated Fable into its diagnostic workflow. Every law firm that had automated document review with Mythos. Every defence contractor, every government agency — all discovered in a single weekend that their infrastructure could be switched off, not by a cyberattack, but by a letter from a cabinet secretary in Washington.</p>
+  <div class="pull-quote read-en" id="c5_pq1">The kill switch is not a metaphor. It is a structural feature of any AI dependency built on another nation's infrastructure. It had always been there, written into the terms of service and the legal architecture of American technology companies. On June 12, 2026, someone finally pulled it.</div>
+  <div class="sec-head">The Architecture of Dependency</div>
+  <p class="read-en" id="c5_p3">To understand the architecture, trace the dependency chain: end user → deploying organisation → software vendor → cloud platform → AI model company → American government. The architecture of dependency made the kill switch not only possible but essentially inevitable once the conditions for its use were met. Every step in the chain was individually rational. The aggregate result was a systemic vulnerability that no single actor could see clearly or had the incentive to correct.</p>
+  <div class="sec-head">The Paradox of Containment</div>
+  <p class="read-en" id="c5_p4">America's strategy of restricting advanced AI chips to China appeared decisive. The reality was more complex. DeepSeek's R1 demonstrated that frontier-level capability could be achieved with restricted hardware using novel efficiency techniques. The lesson that containment strategies have been teaching since the nuclear era repeated itself: restricting a capability can accelerate the development of that capability in the restricted party.</p>
+  <div class="pull-quote read-en" id="c5_pq2">The only sovereign AI is AI you run yourself, on compute you own, with models you control. Everything else is rent — and rent, as June 2026 demonstrated, comes with an eviction clause that the landlord can exercise at any time.</div>
+  <div class="sec-head">Building AI Sovereignty</div>
+  <p class="read-en" id="c5_p5">AI sovereignty exists on a spectrum from complete dependence to complete independence. The practical objective for most nations is to move meaningfully away from complete dependence. The first step is inventory: understanding what AI systems your critical functions depend on and where those systems' key components are controlled. The second is prioritisation. The third is diversification. The fourth — the longest-term and most resource-intensive — is domestic capability investment.</p>
+  <p class="read-en" id="c5_p6">French Prime Minister Lecornu: 'We cannot rely on tools developed by foreign powers.' Canadian Prime Minister Carney: 'Nobody has done anything wrong. But we will have done something wrong if we just accept this.' The map matters. But first you have to read it.</p>
+</div>
+
+<!-- PART III -->
+<div class="part-page" id="part3">
+  <div class="part-label">Part III</div>
+  <h2>The Human Reckoning</h2>
+  <p>Labour · Agentic Engineering · Who Gets Left Behind</p>
+</div>
+
+<!-- CHAPTER 6 -->
+<div class="section" id="ch6" data-section="ch6">
+  <button class="section-play-btn" onclick="playSection('ch6')">▶ Play Section</button>
+  <div class="eyebrow">Part III — The Human Reckoning</div>
+  <div class="ch-num">Chapter 6</div>
+  <h1 class="read-en" id="c6_title">The Labour Bargain Breaks</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="c6_p1">For two centuries, the labour bargain has been the foundational compact of industrial society: technology makes workers more productive, workers command higher wages, higher wages support consumer demand, demand drives growth. The AI era is testing whether that bargain still holds — and the early evidence is deeply uncomfortable.</p>
+  <div class="pull-quote read-en" id="c6_pq1">AI is not merely automating existing jobs. It is dissolving the boundaries between professions entirely. A lawyer who cannot code can now produce code. The job categories themselves — the organising principle of most people's working lives — are becoming obsolete faster than the institutions built around them can adapt.</div>
+  <div class="sec-head">The Scale of Exposure</div>
+  <div class="stat-block"><div class="stat-fig">40%</div><div class="stat-label">Global jobs exposed to AI disruption (IMF, 2024) — rising to 60% in advanced economies</div></div>
+  <div class="stat-block"><div class="stat-fig">300 million</div><div class="stat-label">Full-time jobs affected globally (Goldman Sachs)</div></div>
+  <div class="stat-block"><div class="stat-fig">99%</div><div class="stat-label">OpenAI engineers' output tokens generated via AI agents, May 2026</div></div>
+  <div class="sec-head">The Empirical Proof</div>
+  <p class="read-en" id="c6_p2">OpenAI's research on Codex (June 2026) documented what the agentic transition looks like inside the organisation that built the tools. Within one year, Codex became the primary tool for every department — Legal, Finance, Recruiting, not just Engineering. Seventy percent of users assign tasks exceeding one hour. Twenty-five percent assign tasks exceeding eight hours. Over a quarter of work done by Finance and Legal staff is engineering or coding — tasks entirely outside their training.</p>
+  <div class="sec-head">From Vibe Coding to Agentic Engineering</div>
+  <p class="read-en" id="c6_p3">Karpathy coined 'vibe coding' in early 2025 — describe what you want, accept what comes back. He declared it obsolete a year later, replacing it with 'agentic engineering': orchestrating agents with oversight rather than writing code. He then joined Anthropic, stating the model is the bottleneck on what an agent can do. The XDA benchmark confirmed: Claude Code outperformed rivals not on functionality but on UX judgment — understanding design intent, not just syntax.</p>
+  <div class="sec-head">The New Professional Contract</div>
+  <p class="read-en" id="c6_p4">The professional contract — invest years acquiring expertise, receive compensation reflecting its scarcity — is being disrupted by AI reducing the effective scarcity of expertise. The tasks where AI is most capable are precisely those where the risk of hallucination means human oversight remains essential. The cost savings from AI are real; the human cost of providing oversight is also real; and the net impact on employment is less dramatic than either enthusiasts or alarmists claim.</p>
+  <div class="pull-quote read-en" id="c6_pq2">Vibe coders are users. Agentic engineers are the new infrastructure layer of human capital. The question is not whether AI will affect your work. It is whether you will learn to orchestrate the agents that do it — or be replaced by someone who has learned to orchestrate them more effectively.</div>
+</div>
+
+<!-- CHAPTER 7 -->
+<div class="section" id="ch7" data-section="ch7">
+  <button class="section-play-btn" onclick="playSection('ch7')">▶ Play Section</button>
+  <div class="eyebrow">Part III — The Human Reckoning</div>
+  <div class="ch-num">Chapter 7</div>
+  <h1 class="read-en" id="c7_title">Who Gets Left Behind — and Who Decides</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="c7_p1">Nations without chips. Companies without data. Workers without skills. Investors without access. The AI power shift produces winners at extraordinary speed — and produces a permanent underclass of the unprepared at the same speed. But the question of who gets left behind is not only economic. It is geopolitical, generational, moral, and — most importantly — a matter of deliberate choice rather than inevitable fate.</p>
+  <div class="pull-quote read-en" id="c7_pq1">The AI divide is not merely between the wealthy and the poor. It is between the connected and the disconnected, the skilled and the deskilled, the nations with sovereign AI capability and those permanently dependent on others for their intelligence infrastructure.</div>
+  <div class="sec-head">The Geopolitical Divide</div>
+  <p class="read-en" id="c7_p2">By mid-2026, the United States and China controlled approximately 90 percent of global AI computing power. The next tier — UK, Canada, France, Germany, Japan — had research capability but not infrastructure sovereignty. The tier below — Southeast Asia, South Asia, Africa, Latin America — was consuming AI products built entirely on infrastructure they did not own, running on models trained primarily on data that underrepresented their languages and realities.</p>
+  <div class="sec-head">The Invisible War Dimension</div>
+  <p class="read-en" id="c7_p3">The nations left behind in AI capability are not merely economically disadvantaged. Anthropic's Mythos model demonstrated the ability to discover thousands of critical vulnerabilities in every major OS and browser, completing autonomous end-to-end attacks on enterprise networks. The time from vulnerability discovery to active exploitation collapsed from 2.3 years in 2018 to 20 hours in April 2026. The most powerful AI is simultaneously the most capable offensive cyber weapon ever built — and the only meaningful defence against it at scale.</p>
+  <div class="sec-head">The Equity Imperative</div>
+  <p class="read-en" id="c7_p4">Technologies that produce very concentrated benefits and broadly distributed costs are politically fragile. AI is following a pattern that looks more like nuclear than like the automobile: financial benefits accreting overwhelmingly to infrastructure owners, productivity benefits distributed unevenly among knowledge workers in high-income countries, costs — displacement, deskilling, cybersecurity risk, environmental impact — broadly distributed and falling most heavily on communities least positioned to benefit.</p>
+  <div class="pull-quote read-en" id="c7_pq2">The most important question in the AI era is not which model is the most capable. It is who owns the infrastructure those models run on — and who is permanently excluded from that ownership.</div>
+  <div class="sec-head">The Long View</div>
+  <p class="read-en" id="c7_p5">The concentration of AI infrastructure in a small number of American companies is likely transitional. The opacity of AI systems is likely transitional. The displacement-without-replacement dynamic is also likely transitional. What is not transitional is the shift in the architecture of cognitive capability — the way AI systems have become a permanent part of the infrastructure of thinking, of decision-making, of knowledge work. The integration of AI into human processes is a one-way door.</p>
+  <p class="read-en" id="c7_p6">Which future we inhabit — broadly distributed human flourishing, or concentrated AI-enabled advantage producing instability — will be determined by the choices that are being made now. These choices are not predetermined. They are being made, continuously and consequentially, by a distributed set of actors who mostly do not frame their choices as contributions to the long-term architecture of the AI era. Framing them as such is not idealism. It is strategic clarity about what is at stake and who gets to decide it.</p>
+</div>
+
+<!-- CONCLUSION -->
+<div class="section" id="conclusion" data-section="conclusion">
+  <button class="section-play-btn" onclick="playSection('conclusion')">▶ Play Section</button>
+  <div class="eyebrow">Conclusion</div>
+  <h1 class="read-en" id="con_title">The Map Is Yours</h1>
+  <div class="divider"></div>
+  <p class="read-en" id="con_p1">The AI power shift is not a future event. It is a present reality, unfolding faster than most people have registered, with consequences already visible in the balance sheets of the world's largest companies, the geopolitical calculations of the world's most powerful governments, and the career trajectories of the world's most educated workers.</p>
+  <p class="read-en" id="con_p2"><strong>First:</strong> power in the AI era lives in the infrastructure layer. The companies that own the chips, the energy, the cloud, and the real estate collect rent regardless of which model wins.</p>
+  <p class="read-en" id="con_p3"><strong>Second:</strong> model companies are structurally dependent on infrastructure they do not own. The hyperscalers have more leverage than they appear.</p>
+  <p class="read-en" id="con_p4"><strong>Third:</strong> private capital captured the extraordinary returns before retail investors could participate. The IPO wave of 2026 is the end of the first chapter, not the beginning.</p>
+  <p class="read-en" id="con_p5"><strong>Fourth:</strong> the kill switch is real. Any nation or institution that has built critical infrastructure on another nation's AI has accepted a dependency with an eviction clause. June 2026 was a warning. It will not be the last.</p>
+  <p class="read-en" id="con_p6"><strong>Fifth:</strong> the labour bargain is being renegotiated at machine speed. The question is whether you are learning to orchestrate agents or being orchestrated by them.</p>
+  <p class="read-en" id="con_p7"><strong>Sixth:</strong> AI-enabled cyberwarfare has crossed a threshold from theoretical to operational. Every organisation not rethinking its security posture is operating on borrowed time.</p>
+  <p class="read-en" id="con_p8"><strong>Seventh:</strong> the distribution of AI's gains is a choice, not a destiny. It is being answered right now by decisions that could be made differently.</p>
+  <div class="pull-quote read-en" id="con_pq">The AI Power Shift is not something that is happening to us. It is something we are choosing — through investment decisions, policy choices, and the questions we decide to ask. The map is yours. Use it.</div>
+  <p style="text-align:center;color:#888;font-style:italic;margin-top:32px;">— Prof Dr Tan Teik Kheong · 陳德強教授博士<br>IEEE · 电气电子工程师学会 · 2026</p>
+</div>
+
+<!-- ABOUT THE AUTHOR -->
+<div class="section" id="about" data-section="about">
+  <button class="section-play-btn" onclick="playSection('about')">▶ Play Section</button>
+  <div class="eyebrow">About the Author · 关于作者</div>
+  <div class="divider"></div>
+  <p class="read-en" id="ab_p1">Prof Dr Tan Teik Kheong is a technologist, academic, and strategist with forty years of experience across engineering, policy, and global industry.</p>
+  <p class="read-en" id="ab_p2">His professional journey began with a defining chapter in the early history of broadband networking. As Senior Vice President representing Asia at the global ATM Forum, he was instrumental in bringing broadband infrastructure to scale across the Asia-Pacific region, establishing himself as one of the foremost evangelists of the broadband era that laid the groundwork for the modern internet economy.</p>
+  <p class="read-en" id="ab_p3">He subsequently served as Chair of the IEEE 802.11 Wireless Next Generation Committee, contributing to the foundational standards that gave the world Wi-Fi. His corporate career has taken him through Cisco, NXP Semiconductors, Accenture, FINRA, and IMDA, where he shaped digital policy at a national level. He has taught at Stanford University and MIT, and has collaborated with Oxford.</p>
+  <p class="read-en" id="ab_p4">His contributions have been recognised through his nomination to the International Who's Who of Networking, his designation as an ATM Forum Ambassador, and his appointment as an Internet Society (ISOC) Ambassador. <em>The AI Power Shift</em> is his third book.</p>
+</div>
+
+</div><!-- /content -->
+
+<!-- AUDIO ENGINE -->
+<script>
+let lang = 'en';
+let speed = 1.0;
+let speeds = [0.75, 0.9, 1.0, 1.1, 1.25];
+let speedIdx = 2;
+let isPlaying = false;
+let isPaused = false;
+let allBlocks = [];
+let currentIdx = 0;
+let currentSectionBtn = null;
+
+function getAllReadable() {
+  return Array.from(document.querySelectorAll('[class*="read-en"], [class*="read-zh"]'));
+}
+
+function getSectionReadable(sectionId) {
+  const sec = document.querySelector('[data-section="' + sectionId + '"]');
+  return sec ? Array.from(sec.querySelectorAll('[class*="read-en"], [class*="read-zh"]')) : [];
+}
+
+function getTextFor(el) {
+  if (lang === 'zh') {
+    if (el.classList.contains('read-zh')) return el.textContent.trim();
+    const zh = el.getAttribute('data-zh');
+    return zh || el.textContent.trim();
+  } else {
+    if (el.classList.contains('read-en')) return el.textContent.trim();
+    const en = el.getAttribute('data-en');
+    return en || el.textContent.trim();
+  }
+}
+
+function speakBlock(idx) {
+  if (idx >= allBlocks.length) { stopAll(); return; }
+  const el = allBlocks[idx];
+  el.classList.add('reading-highlight');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // Update TOC highlight
+  updateTOCActive(el);
+  const text = getTextFor(el);
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang === 'zh' ? 'zh-CN' : 'en-GB';
+  u.rate = speed;
+  u.pitch = lang === 'zh' ? 1.0 : 1.05;
+  // Try UK female voice
+  const voices = speechSynthesis.getVoices();
+  if (lang === 'en') {
+    const ukV = voices.find(v => /en-GB/i.test(v.lang) && /female/i.test(v.name))
+             || voices.find(v => /en-GB/i.test(v.lang));
+    if (ukV) u.voice = ukV;
+  }
+  u.onend = () => {
+    el.classList.remove('reading-highlight');
+    if (isPlaying && !isPaused) {
+      currentIdx = idx + 1;
+      speakBlock(currentIdx);
+    }
+  };
+  u.onerror = () => { el.classList.remove('reading-highlight'); };
+  document.getElementById('status').textContent = 'Reading ' + (idx+1) + ' / ' + allBlocks.length;
+  speechSynthesis.speak(u);
+}
+
+function updateTOCActive(el) {
+  const sec = el.closest('[data-section]');
+  if (!sec) return;
+  const id = sec.getAttribute('data-section');
+  document.querySelectorAll('.toc a').forEach(a => a.classList.remove('active'));
+  const link = document.querySelector('.toc a[href="#' + id + '"]');
+  if (link) link.classList.add('active');
+}
+
+function toggleFull() {
+  if (isPlaying) { stopAll(); return; }
+  allBlocks = getAllReadable();
+  currentIdx = 0;
+  isPlaying = true;
+  isPaused = false;
+  document.getElementById('playBtn').textContent = '■';
+  document.getElementById('pauseBtn').style.display = 'flex';
+  document.getElementById('status').textContent = 'Reading full book...';
+  speakBlock(0);
+}
+
+function playSection(sectionId) {
+  stopAll();
+  allBlocks = getSectionReadable(sectionId);
+  if (!allBlocks.length) return;
+  currentIdx = 0;
+  isPlaying = true;
+  isPaused = false;
+  document.getElementById('playBtn').textContent = '■';
+  document.getElementById('pauseBtn').style.display = 'flex';
+  // Mark section btn as playing
+  document.querySelectorAll('.section-play-btn').forEach(b => b.classList.remove('playing'));
+  const sectionEl = document.querySelector('[data-section="' + sectionId + '"]');
+  if (sectionEl) {
+    const btn = sectionEl.querySelector('.section-play-btn');
+    if (btn) btn.classList.add('playing');
+  }
+  speakBlock(0);
+}
+
+function pauseResume() {
+  if (!isPlaying) return;
+  if (isPaused) {
+    isPaused = false;
+    speechSynthesis.resume();
+    document.getElementById('pauseBtn').textContent = '❙❙';
+  } else {
+    isPaused = true;
+    speechSynthesis.pause();
+    document.getElementById('pauseBtn').textContent = '▶';
+  }
+}
+
+function stopAll() {
+  isPlaying = false;
+  isPaused = false;
+  speechSynthesis.cancel();
+  document.getElementById('playBtn').textContent = '▶';
+  document.getElementById('pauseBtn').style.display = 'none';
+  document.getElementById('status').textContent = 'Read Aloud — Full Book or by Section';
+  document.querySelectorAll('.reading-highlight').forEach(el => el.classList.remove('reading-highlight'));
+  document.querySelectorAll('.section-play-btn').forEach(b => b.classList.remove('playing'));
+}
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('enBtn').classList.toggle('active', l === 'en');
+  document.getElementById('zhBtn').classList.toggle('active', l === 'zh');
+  if (isPlaying) { stopAll(); }
+}
+
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % speeds.length;
+  speed = speeds[speedIdx];
+  document.getElementById('speedBtn').textContent = speed.toFixed(2).replace('.00','').replace(/0$/,'') + '×';
+  speechSynthesis.cancel();
+  if (isPlaying && !isPaused) speakBlock(currentIdx);
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && e.target.tagName !== 'BUTTON') {
+    e.preventDefault();
+    if (isPlaying) pauseResume(); else toggleFull();
+  }
+  if (e.code === 'Escape') stopAll();
+});
+
+speechSynthesis.onvoiceschanged = () => {};
+</script>
+
+</body>
+</html>
