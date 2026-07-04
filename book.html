@@ -316,6 +316,21 @@
     transition: background 0.3s;
   }
 
+  .tts-word {
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  .tts-word:hover {
+    background: rgba(201,168,76,0.12);
+  }
+
+  .tts-word.tts-active {
+    background: rgba(201,168,76,0.4);
+    color: #a3792f;
+    transition: background 0.12s;
+  }
+
   .toc-toggle {
     display: none;
     position: fixed;
@@ -626,6 +641,11 @@ let allBlocks = [];
 let currentIdx = 0;
 let currentSectionBtn = null;
 
+// ── word-level highlight state ──
+let currentWordSpans = [];
+let wordTimer = null;
+let lastHighlightedWord = 0;
+
 function getAllReadable() {
   return Array.from(document.querySelectorAll('[class*="read-en"], [class*="read-zh"]'));
 }
@@ -647,35 +667,188 @@ function getTextFor(el) {
   }
 }
 
-function speakBlock(idx) {
+// A block can only be word-highlighted / clicked if the VISIBLE text is what's
+// actually being spoken (i.e. its own class matches the active language).
+// A handful of bilingual dedication blocks speak a translation that isn't the
+// visible text — those fall back to the old paragraph-level highlight instead,
+// since there's no correct word on screen to point to.
+function blockMatchesLang(el) {
+  return (lang === 'en' && el.classList.contains('read-en')) ||
+         (lang === 'zh' && el.classList.contains('read-zh'));
+}
+
+// ── WORD WRAPPING (preserves nested tags like <em>/<strong> via TreeWalker) ──
+function wrapWordsInBlock(el) {
+  if (el.dataset.ttsWrapped) return Array.from(el.querySelectorAll('.tts-word'));
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  const spans = [];
+  textNodes.forEach(node => {
+    const parts = node.textContent.split(/(\s+)/);
+    const frag = document.createDocumentFragment();
+    parts.forEach(part => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+      const span = document.createElement('span');
+      span.className = 'tts-word';
+      span.textContent = part;
+      span.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onWordClick(el, span);
+      });
+      frag.appendChild(span);
+      spans.push(span);
+    });
+    node.parentNode.replaceChild(frag, node);
+  });
+  el.dataset.ttsWrapped = '1';
+  return spans;
+}
+
+function restoreBlockFormatting(el) {
+  if (!el.dataset.ttsWrapped) return;
+  el.querySelectorAll('.tts-word').forEach(span => {
+    span.replaceWith(document.createTextNode(span.textContent));
+  });
+  el.normalize();
+  delete el.dataset.ttsWrapped;
+}
+
+function wrapAllBlocksForLang(blocks) {
+  blocks.forEach(el => { if (blockMatchesLang(el)) wrapWordsInBlock(el); });
+}
+
+function highlightWord(idx) {
+  clearWordHighlight();
+  lastHighlightedWord = idx;
+  if (currentWordSpans[idx]) {
+    currentWordSpans[idx].classList.add('tts-active');
+    currentWordSpans[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function clearWordHighlight() {
+  currentWordSpans.forEach(s => s.classList.remove('tts-active'));
+}
+
+// Timer-based fallback for browsers where onboundary doesn't fire reliably
+// (e.g. Chrome on Android). Mirrors the approach used on the trading site.
+function scheduleWordHighlights(text, startWordIdx) {
+  const words = text.split(/\s+/).filter(Boolean);
+  let delay = 0;
+  function msPerWord(w) {
+    const base = 60000 / 150; // ms/word at rate 1.0, ~150wpm
+    const adjusted = base / speed;
+    const lengthFactor = 1 + (w.length - 4) * 0.03;
+    return Math.max(80, adjusted * Math.max(0.7, lengthFactor));
+  }
+  function step(i) {
+    if (!isPlaying || isPaused || i >= words.length) return;
+    wordTimer = setTimeout(() => {
+      highlightWord(startWordIdx + i);
+      step(i + 1);
+    }, delay);
+    delay += msPerWord(words[i]);
+  }
+  step(0);
+}
+
+function speakBlock(idx, startWordIdx) {
+  startWordIdx = startWordIdx || 0;
   if (idx >= allBlocks.length) { stopAll(); return; }
   const el = allBlocks[idx];
-  el.classList.add('reading-highlight');
+  currentIdx = idx;
   el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  // Update TOC highlight
   updateTOCActive(el);
-  const text = getTextFor(el);
-  const u = new SpeechSynthesisUtterance(text);
+
+  const fullText = getTextFor(el);
+  const matches = blockMatchesLang(el);
+  const words = fullText.split(/\s+/).filter(Boolean);
+  const speakText = startWordIdx > 0 ? words.slice(startWordIdx).join(' ') : fullText;
+
+  let spans = [];
+  if (matches) {
+    spans = Array.from(el.querySelectorAll('.tts-word'));
+    if (!spans.length) spans = wrapWordsInBlock(el);
+  } else {
+    el.classList.add('reading-highlight');
+  }
+  currentWordSpans = spans;
+  if (matches && spans[startWordIdx]) highlightWord(startWordIdx);
+
+  const u = new SpeechSynthesisUtterance(speakText);
   u.lang = lang === 'zh' ? 'zh-CN' : 'en-GB';
   u.rate = speed;
   u.pitch = lang === 'zh' ? 1.0 : 1.05;
-  // Try UK female voice
   const voices = speechSynthesis.getVoices();
   if (lang === 'en') {
     const ukV = voices.find(v => /en-GB/i.test(v.lang) && /female/i.test(v.name))
              || voices.find(v => /en-GB/i.test(v.lang));
     if (ukV) u.voice = ukV;
   }
+
+  let boundaryWorked = false;
+  if (matches && spans.length) {
+    u.onboundary = (e) => {
+      if (e.name !== 'word') return;
+      boundaryWorked = true;
+      if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
+      const textBefore = speakText.substring(0, e.charIndex);
+      const rel = textBefore.split(/\s+/).filter(Boolean).length;
+      highlightWord(startWordIdx + rel);
+    };
+    u.onstart = () => {
+      setTimeout(() => {
+        if (!boundaryWorked && isPlaying && !isPaused) {
+          scheduleWordHighlights(speakText, startWordIdx);
+        }
+      }, 300);
+    };
+  }
+
   u.onend = () => {
-    el.classList.remove('reading-highlight');
-    if (isPlaying && !isPaused) {
-      currentIdx = idx + 1;
-      speakBlock(currentIdx);
-    }
+    if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
+    clearWordHighlight();
+    if (matches) restoreBlockFormatting(el); else el.classList.remove('reading-highlight');
+    if (isPlaying && !isPaused) speakBlock(idx + 1, 0);
   };
-  u.onerror = () => { el.classList.remove('reading-highlight'); };
+  u.onerror = () => {
+    if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
+    clearWordHighlight();
+    if (matches) restoreBlockFormatting(el); else el.classList.remove('reading-highlight');
+  };
+
   document.getElementById('status').textContent = 'Reading ' + (idx+1) + ' / ' + allBlocks.length;
   speechSynthesis.speak(u);
+}
+
+// Click any word (once wrapped) to jump reading to that exact point.
+function onWordClick(el, span) {
+  if (!isPlaying) allBlocks = getAllReadable();
+  const blockIdx = allBlocks.indexOf(el);
+  if (blockIdx === -1) return;
+  const spansInBlock = Array.from(el.querySelectorAll('.tts-word'));
+  const wordIdx = spansInBlock.indexOf(span);
+  if (wordIdx === -1) return;
+  jumpTo(blockIdx, wordIdx);
+}
+
+function jumpTo(blockIdx, wordIdx) {
+  speechSynthesis.cancel();
+  if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
+  if (allBlocks[currentIdx] && currentIdx !== blockIdx) {
+    const prev = allBlocks[currentIdx];
+    clearWordHighlight();
+    prev.classList.remove('reading-highlight');
+  } else {
+    clearWordHighlight();
+  }
+  isPlaying = true;
+  isPaused = false;
+  document.getElementById('playBtn').textContent = '■';
+  document.getElementById('pauseBtn').style.display = 'flex';
+  speakBlock(blockIdx, wordIdx);
 }
 
 function updateTOCActive(el) {
@@ -690,6 +863,7 @@ function updateTOCActive(el) {
 function toggleFull() {
   if (isPlaying) { stopAll(); return; }
   allBlocks = getAllReadable();
+  wrapAllBlocksForLang(allBlocks);
   currentIdx = 0;
   isPlaying = true;
   isPaused = false;
@@ -703,6 +877,7 @@ function playSection(sectionId) {
   stopAll();
   allBlocks = getSectionReadable(sectionId);
   if (!allBlocks.length) return;
+  wrapAllBlocksForLang(allBlocks);
   currentIdx = 0;
   isPlaying = true;
   isPaused = false;
@@ -727,6 +902,7 @@ function pauseResume() {
   } else {
     isPaused = true;
     speechSynthesis.pause();
+    if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
     document.getElementById('pauseBtn').textContent = '▶';
   }
 }
@@ -735,11 +911,15 @@ function stopAll() {
   isPlaying = false;
   isPaused = false;
   speechSynthesis.cancel();
+  if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
+  clearWordHighlight();
   document.getElementById('playBtn').textContent = '▶';
   document.getElementById('pauseBtn').style.display = 'none';
   document.getElementById('status').textContent = 'Read Aloud — Full Book or by Section';
   document.querySelectorAll('.reading-highlight').forEach(el => el.classList.remove('reading-highlight'));
   document.querySelectorAll('.section-play-btn').forEach(b => b.classList.remove('playing'));
+  document.querySelectorAll('[data-tts-wrapped]').forEach(el => restoreBlockFormatting(el));
+  currentWordSpans = [];
 }
 
 function setLang(l) {
@@ -753,8 +933,11 @@ function cycleSpeed() {
   speedIdx = (speedIdx + 1) % speeds.length;
   speed = speeds[speedIdx];
   document.getElementById('speedBtn').textContent = speed.toFixed(2).replace('.00','').replace(/0$/,'') + '×';
-  speechSynthesis.cancel();
-  if (isPlaying && !isPaused) speakBlock(currentIdx);
+  if (isPlaying && !isPaused) {
+    speechSynthesis.cancel();
+    if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
+    speakBlock(currentIdx, lastHighlightedWord);
+  }
 }
 
 // Keyboard shortcuts
