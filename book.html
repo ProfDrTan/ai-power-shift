@@ -716,7 +716,7 @@ function restoreBlockFormatting(el) {
 }
 
 function wrapAllBlocksForLang(blocks) {
-  blocks.forEach(el => { if (blockMatchesLang(el)) wrapWordsInBlock(el); });
+  blocks.forEach(el => wrapWordsInBlock(el));
 }
 
 function highlightWord(idx) {
@@ -767,14 +767,12 @@ function speakBlock(idx, startWordIdx) {
   const words = fullText.split(/\s+/).filter(Boolean);
   const speakText = startWordIdx > 0 ? words.slice(startWordIdx).join(' ') : fullText;
 
-  let spans = [];
-  if (matches) {
-    spans = Array.from(el.querySelectorAll('.tts-word'));
-    if (!spans.length) spans = wrapWordsInBlock(el);
-  } else {
+  let spans = Array.from(el.querySelectorAll('.tts-word'));
+  if (!spans.length) spans = wrapWordsInBlock(el);
+  if (!matches) {
     el.classList.add('reading-highlight');
   }
-  currentWordSpans = spans;
+  currentWordSpans = matches ? spans : [];
   if (matches && spans[startWordIdx]) highlightWord(startWordIdx);
 
   const u = new SpeechSynthesisUtterance(speakText);
@@ -835,6 +833,13 @@ function onWordClick(el, span) {
   if (!isPlaying) allBlocks = getAllReadable();
   const blockIdx = allBlocks.indexOf(el);
   if (blockIdx === -1) return;
+  if (!blockMatchesLang(el)) {
+    // Cross-language block (e.g. English text with a Chinese voice-over):
+    // word-exact mapping isn't reliable across languages, so clicking any
+    // word restarts that paragraph from the beginning in the correct voice.
+    jumpTo(blockIdx, 0);
+    return;
+  }
   const spansInBlock = Array.from(el.querySelectorAll('.tts-word'));
   const wordIdx = spansInBlock.indexOf(span);
   if (wordIdx === -1) return;
