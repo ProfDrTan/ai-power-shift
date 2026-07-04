@@ -811,7 +811,14 @@ function speakBlock(idx, startWordIdx) {
     if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
     clearWordHighlight();
     if (matches) restoreBlockFormatting(el); else el.classList.remove('reading-highlight');
-    if (isPlaying && !isPaused) speakBlock(idx + 1, 0);
+    if (isPlaying && !isPaused) {
+      // Small deliberate gap before the next utterance. Chrome's speech
+      // queue silently drops very short utterances (like chapter headings)
+      // when the next speak() call fires synchronously inside onend.
+      setTimeout(() => {
+        if (isPlaying && !isPaused) speakBlock(idx + 1, 0);
+      }, 180);
+    }
   };
   u.onerror = () => {
     if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
