@@ -1587,5 +1587,27 @@
   </div>
 </footer>
 
+<button id="signal-watch-pill" style="position:fixed;bottom:24px;right:24px;z-index:100;background:var(--gold);color:var(--bg);font-family:system-ui,sans-serif;font-weight:600;font-size:0.8rem;letter-spacing:0.5px;padding:11px 18px;border-radius:24px;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.5);display:flex;align-items:center;gap:8px;" onclick="document.getElementById('signal-watch-panel').classList.toggle('open')">
+  <span style="width:7px;height:7px;border-radius:50%;background:var(--teal);"></span> Signal Watch
+</button>
+
+<div id="signal-watch-panel" style="display:none;position:fixed;bottom:76px;right:24px;z-index:100;width:340px;max-width:calc(100vw - 48px);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px 22px;box-shadow:0 8px 30px rgba(0,0,0,0.6);font-family:system-ui,sans-serif;">
+  <button onclick="document.getElementById('signal-watch-panel').classList.remove('open')" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;">✕</button>
+  <h5 style="font-family:system-ui,sans-serif;font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Recent Signals</h5>
+
+  <div style="padding:0.7rem 0.9rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-size:0.78rem;color:var(--text-dim);margin-bottom:10px;">
+    <strong style="color:var(--gold);">Model Layer Consolidation</strong> — Claude Sonnet 5, GPT-5.5, and Gemini's agentic Spark all shipped within weeks of each other in mid-2026, converging on the same $20/month price point. The compute layer is where differentiation is actually happening now, not the chat interface.
+  </div>
+  <div style="padding:0.7rem 0.9rem;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 4px 4px 0;font-size:0.78rem;color:var(--text-dim);margin-bottom:10px;">
+    <strong style="color:var(--teal);">Export Control Volatility</strong> — Anthropic's Fable 5/Mythos 5 were suspended for 19 days in June 2026 under US export controls, then restored once the controls lifted. A live case study in how policy, not just compute, now gates model access.
+  </div>
+
+  <p style="font-size:0.72rem;color:var(--text-muted);margin-top:12px;line-height:1.5;">This panel updates when a new Signal Watch digest is run and rolled in — infrastructure, capital flows, chip supply, and policy shifts relevant to the book's thesis, not day-to-day tool features.</p>
+</div>
+
+<style>
+  #signal-watch-panel.open{display:block !important;}
+</style>
+
 </body>
 </html>
